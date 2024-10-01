@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -12,6 +12,8 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ProductComponent } from './components/product/product.component';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,16 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
     NavbarComponent,
     FooterComponent,
     OrderComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent],

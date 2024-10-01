@@ -1,3 +1,11 @@
+<div
+  *ngIf="showAlert"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+  Đăng nhập thất bại. Vui lòng thử lại!
+</div>
+
 <div class="container-fluid justify-content-center d-flex p-5">
   <div class="card-1 mt-5 me-3">
     <img src="https://freepngimg.com/download/shoes/28090-6-sneaker-file.png" alt="Logo" width="100%" class="mt-4">
@@ -7,13 +15,14 @@
     <div class="card mt-5">
       <a class="login font-monospace">Welcome to SneakZone</a>
       <div class="inputBox">
-        <input type="text" required="required" [(ngModel)]="request.username" name="username" />
+        <input id="username" type="text" required="required" [(ngModel)]="request.username" name="username" />
         <span class="user">Username</span>
+        <div class="mt-2 text-danger" *ngIf="!checkUsername">* Username is required</div>
       </div>
-
       <div class="inputBox">
-        <input type="password" required="required" [(ngModel)]="request.password" name="password" />
+        <input id="password" type="password" required="required" [(ngModel)]="request.password" name="password" />
         <span>Password</span>
+        <div class="mt-2 text-danger" *ngIf="!checkPassword">* Password is required</div>
       </div>
       <button type="submit" class="enter">Enter</button>
     </div>
