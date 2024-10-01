@@ -10,7 +10,7 @@ export class ProductComponent {
 
   fileForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.fileForm = this.fb.group({
       files: this.fb.array([this.createFileInput()])
     });

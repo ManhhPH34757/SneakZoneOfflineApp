@@ -15,12 +15,12 @@ export class AuthService {
 
   authorization(request: Auth): Observable<any> {
     return this.http.post(this.authApi, request);
-  }
+  };
 
   getRole(): string {
     const token: any = localStorage.getItem('access_token');
     const decoded: any = jwtDecode(token);
     return decoded.scope;
-  }
+  };
 
 }
