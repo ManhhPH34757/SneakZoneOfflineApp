@@ -56,14 +56,14 @@ export class LoginComponent implements OnInit {
         }
       });
     }
-  }
+  };
 
   displayAlert() {
     this.showAlert = true;
     setTimeout(() => {
       this.showAlert = false;
     }, 3000);
-  }
+  };
 
   ngOnInit(): void {
     let access_token: any = localStorage.getItem('access_token');

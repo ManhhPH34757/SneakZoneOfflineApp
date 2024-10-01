@@ -1,0 +1,17 @@
+/* file-upload-form.component.css */
+.card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+button {
+  margin: 10px 0;
+}
+
+input[type="file"] {
+  display: block;
+  margin-bottom: 10px;
+}

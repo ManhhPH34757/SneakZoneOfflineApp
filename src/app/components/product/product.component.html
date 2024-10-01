@@ -1,0 +1,13 @@
+<!-- file-upload-form.component.html -->
+<div class="card">
+  <form [formGroup]="fileForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="files">
+      <div *ngFor="let fileCtrl of files.controls; let i = index" [formGroupName]="i">
+        <input type="file" [id]="'img' + (i + 1)" formControlName="file">
+        <button type="button" (click)="removeFileInput(i)" *ngIf="files.length > 1">Xóa</button>
+      </div>
+    </div>
+    <button type="button" (click)="addFileInput()" [disabled]="files.length >= 5">Thêm ảnh</button>
+    <button type="submit">Submit</button>
+  </form>
+</div>
