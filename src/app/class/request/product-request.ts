@@ -3,8 +3,9 @@ import { Category } from "../dto/category";
 import { Material } from "../dto/material";
 import { Sole } from "../dto/sole";
 
-export class Product {
+export class ProductRequest {
   id: string = '';
+  productCode: string = '';
   productName: string = '';
   idBrand: Brand = new Brand();
   idCategory: Category = new Category();

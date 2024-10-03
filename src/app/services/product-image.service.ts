@@ -3,19 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class MaterialService {
-  private readonly materialApi = 'http://localhost:8080/api/materials';
+export class ProductImageService {
 
-  constructor(private readonly http: HttpClient) {}
+  private readonly productImageApi = 'http://localhost:8080/api/product-images';
 
-  getAllMaterials(): Observable<any> {
+  constructor(private readonly http: HttpClient) { }
+
+  getProductImagesById(idProduct: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.get(`${this.materialApi}`, { headers: header });
+    return  this.http.get(`${this.productImageApi}/${idProduct}`, { headers: header });
+
   }
+
 }

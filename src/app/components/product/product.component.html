@@ -1,13 +1,131 @@
-<!-- file-upload-form.component.html -->
-<div class="card">
-  <form [formGroup]="fileForm" (ngSubmit)="onSubmit()">
-    <div formArrayName="files">
-      <div *ngFor="let fileCtrl of files.controls; let i = index" [formGroupName]="i">
-        <input type="file" [id]="'img' + (i + 1)" formControlName="file">
-        <button type="button" (click)="removeFileInput(i)" *ngIf="files.length > 1">Xóa</button>
+<div class="card p-3 mb-3">
+  <form>
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group mt-3">
+          <label for="productCode">Product code:</label>
+          <input id="productCode" type="text" class="form-control mt-2" [(ngModel)]="product.productCode" name="productCode" [readOnly]="editing" />
+        </div>
+        <div class="form-group mt-3">
+          <label for="productName">Product name:</label>
+          <input id="productName" type="text" class="form-control mt-2" [(ngModel)]="product.productName" name="productName"/>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group mt-3">
+          <label for="brand">Brand:</label>
+          <select
+            name="idBrand"
+            [(ngModel)]="product.idBrand"
+            id="brand"
+            class="form-control mt-2"
+          >
+            <option *ngFor="let brand of brands" [ngValue]="brand">
+              {{ brand.brandName }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          <label for="category">Category:</label>
+          <select
+            name="idCategogy"
+            [(ngModel)]="product.idCategory"
+            id="category"
+            class="form-control mt-2"
+          >
+            <option *ngFor="let category of categories" [ngValue]="category">
+              {{ category.categoryName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group mt-3">
+          <label for="material">Material:</label>
+          <select
+            name="idMaterial"
+            [(ngModel)]="product.idMaterial"
+            id="material"
+            class="form-control mt-2"
+          >
+            <option *ngFor="let material of materials" [ngValue]="material">
+              {{ material.materialName }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          <label for="sole">Sole:</label>
+          <select
+            name="idSole"
+            [(ngModel)]="product.idSole"
+            id="sole"
+            class="form-control mt-2"
+          >
+            <option *ngFor="let sole of soles" [ngValue]="sole">
+              {{ sole.soleName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-3" *ngIf="selectedFiles.length > 0">
+        <img *ngFor="let img of selectedFiles" [src]="'/assets/images/' + img.name" [alt]="img.name" width="10%" class="me-2">
+      </div>
+      <div class="col-12 mt-3">
+        <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
+          <iconify-icon icon="gg:add-r"></iconify-icon> Create
+        </button>
+        <button [disabled]="!editing" class="btn btn-outline-primary ms-3" (click)="onUpdate()">
+          <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+        </button>
+        <button class="btn btn-outline-info ms-3" (click)="openFilePicker()">
+          <iconify-icon icon="flowbite:upload-solid"></iconify-icon> Upload image
+        </button>
+        <input type="file" id="file-input" accept="image/*" multiple style="display:none" (change)="onSelectImages($event)" />
+        <button class="btn btn-outline-danger ms-3" (click)="clear()">
+          <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+        </button>
       </div>
     </div>
-    <button type="button" (click)="addFileInput()" [disabled]="files.length >= 5">Thêm ảnh</button>
-    <button type="submit">Submit</button>
   </form>
+</div>
+<div class="card p-3">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Product code</th>
+        <th>Product name</th>
+        <th>Brand</th>
+        <th>Category</th>
+        <th>Material</th>
+        <th>Sole</th>
+        <th>Quantity</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ product.productCode }}</td>
+        <td>{{ product.productName }}</td>
+        <td>{{ product.brandName }}</td>
+        <td>{{ product.categoryName }}</td>
+        <td>{{ product.materialName }}</td>
+        <td>{{ product.soleName }}</td>
+        <td>{{ product.quantity }}</td>
+        <td><button class="btn btn-outline-info" (click)="edit(product)">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination justify-content-center d-flex">
+    <button class="btn m-1" (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
+    <button class="btn m-1" (click)="goToPrevPage()" [disabled]="currentPage === 1">Prev</button>
+
+    <span *ngFor="let page of displayedPages">
+      <button class="btn m-1" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+    </span>
+
+    <button class="btn m-1" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
+    <button class="btn m-1" (click)="goToLastPage()" [disabled]="currentPage === totalPages">Last</button>
+  </div>
 </div>
