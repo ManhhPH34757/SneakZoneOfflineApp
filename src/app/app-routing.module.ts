@@ -7,6 +7,7 @@ import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { ProductComponent } from './components/product/product.component';
 import { CustomerComponent } from './components/customer/customer.component';
+import { StaffComponent } from './components/staff/staff.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'products', component: ProductComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
+  { path: 'staffs', component: StaffComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];
