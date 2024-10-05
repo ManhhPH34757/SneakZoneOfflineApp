@@ -8,6 +8,9 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { ProductComponent } from './components/product/product.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { CategoryComponent } from './components/category/category.component';
+import { MaterialComponent } from './components/material/material.component';
+import { CustomerComponent } from './components/customer/customer.component';
+import { StaffComponent } from './components/staff/staff.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -16,6 +19,9 @@ const routes: Routes = [
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
   { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
   { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
+  { path: 'materials', component: MaterialComponent, canActivate: [authGuard] },
+  { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
+  { path: 'staffs', component: StaffComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];

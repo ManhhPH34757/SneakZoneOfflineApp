@@ -16,6 +16,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ProductComponent } from './components/product/product.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { CategoryComponent } from './components/category/category.component';
+import { MaterialComponent } from './components/material/material.component';
+import { SoleComponent } from './components/sole/sole.component';
+import { CustomerComponent } from './components/customer/customer.component';
+import { StaffComponent } from './components/staff/staff.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import { CategoryComponent } from './components/category/category.component';
     UnauthorizedComponent,
     ProductComponent,
     BrandComponent,
-    CategoryComponent
+    CategoryComponent,
+    MaterialComponent,
+    SoleComponent,
+    CustomerComponent,
+    StaffComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +45,7 @@ import { CategoryComponent } from './components/category/category.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
