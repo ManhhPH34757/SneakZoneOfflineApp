@@ -1,0 +1,59 @@
+
+<div class="card p-3 mb-3">
+    <form>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mt-3">
+                  <label for="categoryCode">Category code:</label>
+                  <input id="categoryCode" type="text" class="form-control mt-2" [(ngModel)]="category.categoryCode" name="categoryCode" [readOnly]="editing"/>
+                </div>
+                <div class="form-group mt-3">
+                  <label for="categoryName">Category name:</label>
+                  <input id="categoryName" type="text" class="form-control mt-2" [(ngModel)]="category.categoryName" name="categoryName"/>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group  mt-3">
+                    <label for="description">Description:</label>
+                    <input id="description" type="text" class="form-control mt-2" [(ngModel)]="category.description" name="description" />
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+            <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
+                <iconify-icon icon="gg:add-r"></iconify-icon> Create
+            </button>
+            <button [disabled]="!editing" class="btn btn-outline-primary ms-3" >
+                <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+            </button>
+            <button class="btn btn-outline-danger ms-3" (click)="clear()">
+                <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+            </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="card p-3">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Category code</th>
+                <th>Category name</th>
+                <th>Desscription</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of categories; index as i">
+                <td>{{ i + 1}}</td>
+                <td>{{c.categoryCode}}</td>
+                <td>{{c.categoryName}}</td>
+                <td>{{c.description}}</td>
+                <td>
+                    <button class="btn btn-outline-info"><iconify-icon icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
+                    <button class="btn btn-outline-danger"><iconify-icon icon="mi:delete"></iconify-icon>Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

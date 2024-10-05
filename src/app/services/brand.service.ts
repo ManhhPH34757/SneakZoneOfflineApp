@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Brand } from '../class/dto/brand';
 
 @Injectable({
   providedIn: 'root',
@@ -18,4 +19,23 @@ export class BrandService {
     });
     return this.http.get(`${this.brandApi}`, { headers: header });
   }
+
+  getBrandById(id: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return  this.http.get(`${this.brandApi}/${id}`, { headers: header });
+  }
+  createBrand(brand: Brand): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<Brand>(this.brandApi, brand, { headers: header });
+  }
+
 }
+ 

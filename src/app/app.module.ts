@@ -14,6 +14,8 @@ import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProductComponent } from './components/product/product.component';
+import { BrandComponent } from './components/brand/brand.component';
+import { CategoryComponent } from './components/category/category.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ProductComponent } from './components/product/product.component';
     FooterComponent,
     OrderComponent,
     UnauthorizedComponent,
-    ProductComponent
+    ProductComponent,
+    BrandComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

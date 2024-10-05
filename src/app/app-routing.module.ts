@@ -6,12 +6,16 @@ import { authGuard } from './guard/auth.guard';
 import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { ProductComponent } from './components/product/product.component';
+import { BrandComponent } from './components/brand/brand.component';
+import { CategoryComponent } from './components/category/category.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
   { path: 'products', component: ProductComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
+  { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
+  { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];
@@ -20,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { } 
