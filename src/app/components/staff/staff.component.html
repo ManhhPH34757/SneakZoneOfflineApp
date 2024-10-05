@@ -1,0 +1,30 @@
+<div class="container">
+      <table class="table">
+            <tr>
+                  <th>id</th>
+                  <th>StaffCode</th>
+                  <th>FullName</th>
+                  <th>Gender</th>
+                  <th>Birthday</th>
+                  <th>Status</th>
+                  <th>PhoneNumber</th>
+                  <th>Address</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Role</th>
+            </tr>
+            <tr *ngFor="let staff of staffs; index as i">
+                  <td>{{ i + 1}}</td>
+                  <td>{{staff.staffCode}}</td>
+                  <td>{{staff.fullName}}</td>
+                  <td>{{staff.gender}}</td>
+                  <td>{{staff.birthday}}</td>
+                  <td>{{staff.isActive}}</td>
+                  <td>{{staff.phoneNumber}}</td>
+                  <td>{{staff.address}}</td>
+                  <td>{{staff.email}}</td>
+                  <td>{{staff.username}}</td>
+                  <td>{{staff.role}}</td>
+            </tr>
+      </table>
+</div>

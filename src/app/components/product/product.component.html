@@ -1,14 +1,51 @@
+<div
+  *ngIf="showAlertErrorImages"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: absolute; top: 15px; right: 30px; z-index: 1000"
+>
+  Chỉ được chọn tối đa 5 ảnh!
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: absolute; top: 15px; right: 30px; z-index: 1000"
+>
+  Lưu thành công!
+</div>
+
 <div class="card p-3 mb-3">
+  <h3 class="text-center font-monospace">Product Information</h3>
   <form>
     <div class="row">
       <div class="col-4">
         <div class="form-group mt-3">
           <label for="productCode">Product code:</label>
-          <input id="productCode" type="text" class="form-control mt-2" [(ngModel)]="product.productCode" name="productCode" [readOnly]="editing" />
+          <input
+            id="productCode"
+            type="text"
+            class="form-control mt-2"
+            [(ngModel)]="product.productCode"
+            name="productCode"
+            [readOnly]="editing"
+          />
+          <div class="text-danger" *ngIf="!checkProductCode">
+            * Product code is required
+          </div>
         </div>
         <div class="form-group mt-3">
           <label for="productName">Product name:</label>
-          <input id="productName" type="text" class="form-control mt-2" [(ngModel)]="product.productName" name="productName"/>
+          <input
+            id="productName"
+            type="text"
+            class="form-control mt-2"
+            [(ngModel)]="product.productName"
+            name="productName"
+          />
+          <div class="text-danger" *ngIf="!checkProductName">
+            * Product name is required
+          </div>
         </div>
       </div>
       <div class="col-4">
@@ -20,10 +57,11 @@
             id="brand"
             class="form-control mt-2"
           >
-            <option *ngFor="let brand of brands" [ngValue]="brand">
+            <option *ngFor="let brand of brands" [ngValue]="brand.id">
               {{ brand.brandName }}
             </option>
           </select>
+          <div class="text-danger" *ngIf="!checkBrand">* Brand is required</div>
         </div>
         <div class="form-group mt-3">
           <label for="category">Category:</label>
@@ -33,10 +71,13 @@
             id="category"
             class="form-control mt-2"
           >
-            <option *ngFor="let category of categories" [ngValue]="category">
+            <option *ngFor="let category of categories" [ngValue]="category.id">
               {{ category.categoryName }}
             </option>
           </select>
+          <div class="text-danger" *ngIf="!checkCategory">
+            * Category is required
+          </div>
         </div>
       </div>
       <div class="col-4">
@@ -48,10 +89,13 @@
             id="material"
             class="form-control mt-2"
           >
-            <option *ngFor="let material of materials" [ngValue]="material">
+            <option *ngFor="let material of materials" [ngValue]="material.id">
               {{ material.materialName }}
             </option>
           </select>
+          <div class="text-danger" *ngIf="!checkMaterial">
+            * Material is required
+          </div>
         </div>
         <div class="form-group mt-3">
           <label for="sole">Sole:</label>
@@ -61,35 +105,196 @@
             id="sole"
             class="form-control mt-2"
           >
-            <option *ngFor="let sole of soles" [ngValue]="sole">
+            <option *ngFor="let sole of soles" [ngValue]="sole.id">
               {{ sole.soleName }}
             </option>
           </select>
+          <div class="text-danger" *ngIf="!checkSole">* Sole is required</div>
         </div>
       </div>
       <div class="col-12 mt-3" *ngIf="selectedFiles.length > 0">
-        <img *ngFor="let img of selectedFiles" [src]="'/assets/images/' + img.name" [alt]="img.name" width="10%" class="me-2">
+        <img
+          *ngFor="let img of selectedFiles"
+          [src]="'/assets/images/' + img.name"
+          [alt]="img.name"
+          width="100px"
+          height="100px"
+          class="me-2"
+        />
+      </div>
+      <div class="text-danger mt-3" *ngIf="!checkImages">
+        * Images is required
       </div>
       <div class="col-12 mt-3">
-        <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
+        <button
+          [disabled]="editing"
+          class="btn btn-outline-success"
+          (click)="onSubmit()"
+        >
           <iconify-icon icon="gg:add-r"></iconify-icon> Create
         </button>
-        <button [disabled]="!editing" class="btn btn-outline-primary ms-3" (click)="onUpdate()">
+        <button
+          [disabled]="!editing"
+          class="btn btn-outline-primary ms-3"
+          (click)="onUpdate()"
+        >
           <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
         </button>
         <button class="btn btn-outline-info ms-3" (click)="openFilePicker()">
-          <iconify-icon icon="flowbite:upload-solid"></iconify-icon> Upload image
+          <iconify-icon icon="flowbite:upload-solid"></iconify-icon> Upload
+          image
         </button>
-        <input type="file" id="file-input" accept="image/*" multiple style="display:none" (change)="onSelectImages($event)" />
+        <input
+          type="file"
+          id="file-input"
+          accept="image/*"
+          multiple
+          style="display: none"
+          (change)="onSelectImages($event)"
+        />
         <button class="btn btn-outline-danger ms-3" (click)="clear()">
           <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
         </button>
+        <button class="btn btn-outline-secondary ms-3" (click)="openFileImport()">
+          <iconify-icon icon="mingcute:file-import-line"></iconify-icon> Import
+          file
+        </button>
+        <input
+          type="file"
+          id="file-import"
+          accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          style="display: none"
+          (change)="onSelectFileImport($event)"
+        />
       </div>
     </div>
   </form>
 </div>
 <div class="card p-3">
-  <table class="table">
+  <h3 class="text-center font-monospace">Product List</h3>
+  <form>
+    <div class="row">
+      <div class="col-12">
+        <button class="btn btn-outline-secondary float-end" (click)="getAll()">
+          <iconify-icon icon="material-symbols:all-out-outline"></iconify-icon>
+          All
+        </button>
+        <button
+          class="btn btn-outline-indigo float-end me-2"
+          (click)="filters()"
+        >
+          <iconify-icon icon="mingcute:filter-line"></iconify-icon> Filter
+        </button>
+        <button
+          class="btn btn-outline-success float-end me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          <iconify-icon icon="mingcute:file-export-line"></iconify-icon> Export
+          file
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filterProductName">Product name:</label>
+          <input
+            id="filterProductName"
+            type="text"
+            class="form-control"
+            [(ngModel)]="filter.productName"
+            name="productName"
+          />
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filterBrand">Brand:</label>
+          <select
+            name="idBrand"
+            id="filterBrand"
+            class="form-control"
+            [(ngModel)]="filter.idBrand"
+          >
+            <option *ngFor="let brand of brands" [ngValue]="brand.id">
+              {{ brand.brandName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filterCategory">Category:</label>
+          <select
+            name="idCategory"
+            id="filterCategory"
+            class="form-control"
+            [(ngModel)]="filter.idCategory"
+          >
+            <option *ngFor="let category of categories" [ngValue]="category.id">
+              {{ category.categoryName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filterMaterial">Material:</label>
+          <select
+            name="idMaterial"
+            id="filterMaterial"
+            class="form-control"
+            [(ngModel)]="filter.idMaterial"
+          >
+            <option *ngFor="let material of materials" [ngValue]="material.id">
+              {{ material.materialName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filterSole">Sole:</label>
+          <select
+            name="idSole"
+            id="filterSole"
+            class="form-control"
+            [(ngModel)]="filter.idSole"
+          >
+            <option *ngFor="let sole of soles" [ngValue]="sole.id">
+              {{ sole.soleName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-group">
+          <label for="from">From:</label>
+          <input
+            type="text"
+            id="from"
+            name="min"
+            [(ngModel)]="filter.min"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-group">
+          <label for="to">To:</label>
+          <input
+            type="text"
+            id="to"
+            name="max"
+            [(ngModel)]="filter.max"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+  <table class="table mt-3">
     <thead>
       <tr>
         <th>STT</th>
@@ -113,19 +318,118 @@
         <td>{{ product.materialName }}</td>
         <td>{{ product.soleName }}</td>
         <td>{{ product.quantity }}</td>
-        <td><button class="btn btn-outline-info" (click)="edit(product)">Edit</button></td>
+        <td>
+          <button class="btn btn-outline-info" (click)="edit(product)">
+            <iconify-icon icon="bxs:edit"></iconify-icon>
+          </button>
+          <button class="btn btn-outline-primary ms-2" (click)="edit(product)">
+            <iconify-icon
+              icon="majesticons:checkbox-list-detail-line"
+            ></iconify-icon>
+          </button>
+          <button class="btn btn-outline-dark ms-2" (click)="edit(product)">
+            <iconify-icon icon="material-symbols:delete"></iconify-icon>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div class="row">
+    <div class="col-12">
+      <div class="col-1 form-group float-end ps-3 pe-3">
+        <select
+          name="size"
+          id="size"
+          class="form-control"
+          [(ngModel)]="size"
+          (change)="changeSize()"
+        >
+          <option value="5">5</option>
+          <option value="20">20</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <div class="pagination justify-content-center d-flex">
-    <button class="btn m-1" (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
-    <button class="btn m-1" (click)="goToPrevPage()" [disabled]="currentPage === 1">Prev</button>
+    <button
+      class="btn m-1"
+      (click)="goToFirstPage()"
+      [disabled]="currentPage === 0"
+    >
+      First
+    </button>
+    <button
+      class="btn m-1"
+      (click)="goToPrevPage()"
+      [disabled]="currentPage === 0"
+    >
+      Prev
+    </button>
 
     <span *ngFor="let page of displayedPages">
-      <button class="btn m-1" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+      <button
+        class="btn m-1"
+        (click)="goToPage(page)"
+        [class.active]="page - 1 === currentPage"
+      >
+        {{ page }}
+      </button>
     </span>
 
-    <button class="btn m-1" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
-    <button class="btn m-1" (click)="goToLastPage()" [disabled]="currentPage === totalPages">Last</button>
+    <button
+      class="btn m-1"
+      (click)="goToNextPage()"
+      [disabled]="currentPage === totalPages - 1"
+    >
+      Next
+    </button>
+    <button
+      class="btn m-1"
+      (click)="goToLastPage()"
+      [disabled]="currentPage === totalPages - 1"
+    >
+      Last
+    </button>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="name">Enter the file name:</label>
+          <input
+            type="text"
+            class="form-control mt-2"
+            id="fileName"
+            [(ngModel)]="fileName"
+          />
+          <div class="text-danger" *ngIf="!checkFileName">
+            * File name is required
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="close()"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges()">
+          Save changes
+        </button>
+      </div>
+    </div>
   </div>
 </div>
