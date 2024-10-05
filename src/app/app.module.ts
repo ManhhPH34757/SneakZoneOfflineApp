@@ -14,6 +14,7 @@ import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProductComponent } from './components/product/product.component';
+import { StaffComponent } from './components/staff/staff.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProductComponent } from './components/product/product.component';
     FooterComponent,
     OrderComponent,
     UnauthorizedComponent,
-    ProductComponent
+    ProductComponent,
+    StaffComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,7 @@ import { ProductComponent } from './components/product/product.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
