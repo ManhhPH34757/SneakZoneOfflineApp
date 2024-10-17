@@ -1,0 +1,61 @@
+
+<div class="Container">
+    <div class="card p-3 mb-3">
+        <form>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="materialCode">Material Code</label>
+                        <input id="materialCode" type="text" class="form-control" [(ngModel)]="material.materialCode" name="materialCode">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="materialName">Material Name</label>
+                        <input id="materialName" type="text" class="form-control" [(ngModel)]="material.materialName" name="materialName">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Description</label>
+                        <input id="description" type="text" class="form-control" [(ngModel)]="material.description" name="description">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-outline-success" (click)="onSubmit()">
+                    <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                  </button>
+                  <button class="btn btn-outline-primary ms-3">
+                    <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                  </button>
+                  <button class="btn btn-outline-danger ms-3"(click)="clear()">
+                    <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                  </button>
+            </div>
+        </form>
+    </div>
+    <div class="card p-3">
+        <table class="table">
+           <thead>
+            <tr>
+                <th>ID</th>
+                <th>Material Code</th>
+                <th>Material Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr *ngFor="let m of materials,index as i">
+                <td>{{i+1}}</td>
+                <td>{{m.materialCode}}</td>
+                <td>{{m.materialName}}</td>
+                <td>{{m.description}}</td>
+                <td>
+                    <button class="btn btn-info"(click)="edit(material)">Edit</button>
+                    <button class="btn btn-danger ms-3">Delete</button>
+                </td>
+            </tr>
+           </tbody>
+        </table>
+    </div>
+</div>

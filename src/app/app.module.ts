@@ -14,8 +14,13 @@ import { OrderComponent } from './components/order/order.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProductComponent } from './components/product/product.component';
+import { BrandComponent } from './components/brand/brand.component';
+import { CategoryComponent } from './components/category/category.component';
+import { MaterialComponent } from './components/material/material.component';
+import { SoleComponent } from './components/sole/sole.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { ColorComponent } from './components/color/color.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +33,13 @@ import { StaffComponent } from './components/staff/staff.component';
     OrderComponent,
     UnauthorizedComponent,
     ProductComponent,
+    BrandComponent,
+    CategoryComponent,
+    MaterialComponent,
+    SoleComponent,
     CustomerComponent,
-    StaffComponent
+    StaffComponent,
+    ColorComponent
   ],
   imports: [
     BrowserModule,

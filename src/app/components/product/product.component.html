@@ -1,4 +1,4 @@
-<div
+ <div
   *ngIf="showAlertErrorImages"
   class="alert alert-danger alert-dismissible fade show"
   role="alert"
@@ -59,7 +59,7 @@
           >
             <option *ngFor="let brand of brands" [ngValue]="brand.id">
               {{ brand.brandName }}
-            </option>
+            </option> 
           </select>
           <div class="text-danger" *ngIf="!checkBrand">* Brand is required</div>
         </div>

@@ -261,7 +261,7 @@ export class ProductComponent implements OnInit {
       this.selectedFiles = files;
     }
   }
-
+  
   edit(productEdit: ProductResponse) {
     this.productService.getProductById(productEdit.id).subscribe((data) => {
       this.product = data.result;
