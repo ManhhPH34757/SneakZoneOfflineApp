@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductResponse } from '../../class/response/product-response';
@@ -41,9 +41,9 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private readonly productService: ProductService,
-    private readonly productDetailsService: ProductDetailsService,
+    @Inject(ProductDetailsService) private readonly productDetailsService: ProductDetailsService,
     private readonly colorService: ColorService,
-    private readonly sizeService: SizeService,
+    @Inject(SizeService) private readonly sizeService: SizeService,
     private readonly route: ActivatedRoute
   ) {}
 

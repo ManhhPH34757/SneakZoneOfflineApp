@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from '../class/dto/category';
@@ -56,5 +56,14 @@ export class CategoryService {
       headers: header,
     });
   }
-
+  getCategoryByName(categoryName: any): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append('name', categoryName);
+    return this.http.get(`${this.categoryApi}/findByName`, { headers: header, params: params });
+  }
 }

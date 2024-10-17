@@ -35,15 +35,15 @@ export class BrandComponent implements OnInit {
     this.brandService.getAllBrands().subscribe(data => {
       this.brands = data.result;
     });
-    
+
   }
 
   ngOnInit(): void {
     const access_token: any = localStorage.getItem('access_token');
     let decoded: any = jwtDecode(access_token);
-    if(decoded.scope == 'ADMIN'){
+    if (decoded.scope == 'ADMIN') {
       this.role = true;
-    }else{
+    } else {
       this.role = false;
     }
     this.loadBrand();
@@ -73,17 +73,16 @@ export class BrandComponent implements OnInit {
   }
 
   delete(brand: Brand): void {
-    this.productService.checkExistsByIdBrand(brand.id).subscribe(data =>{
-      if(data.result) {
-        this.displayAlert('error','Cannot delete brand because it has product(s)');
-      }else{
+    this.productService.checkExistsByIdBrand(brand.id).subscribe(data => {
+      if (data.result) {
+        this.displayAlert('error', 'Cannot delete brand because it has product(s)');
+      } else
         if (confirm('Bạn có chắc muốn xóa không?')) {
           this.brandService.deleteBrand(brand.id).subscribe(() => {
             this.loadBrand();
-            this.displayAlert('success','Deleted success');
+            this.displayAlert('success', 'Deleted success');
           });
         }
-      }
     })
   }
 
@@ -161,7 +160,7 @@ export class BrandComponent implements OnInit {
   validationUpdate(): boolean {
     let brandName = (document.getElementById('brandName') as HTMLInputElement).value.trim();
     let description = (document.getElementById('description') as HTMLInputElement).value.trim();
-  
+
     if (brandName.length == 0) {
       this.checkBrandName = false;
       this.errorMsgBrandName = 'Brand name is required.';

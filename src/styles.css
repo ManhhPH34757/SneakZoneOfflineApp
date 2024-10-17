@@ -2257,7 +2257,7 @@ progress {
   border-color: var(--bs-table-border-color);
 }
 .table > :not(caption) > * > * {
-  padding: 14px 24px;
+  padding: 10px 10px;
   color: var(
     --bs-table-color-state,
     var(--bs-table-color-type, var(--bs-table-color))
@@ -6766,7 +6766,7 @@ fieldset:disabled .btn {
 }
 .modal {
   --bs-modal-zindex: 1055;
-  --bs-modal-width: 350px;
+  --bs-modal-width: 588px;
   --bs-modal-padding: 1rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: ;

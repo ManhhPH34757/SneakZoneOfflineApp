@@ -12,11 +12,13 @@ import { MaterialComponent } from './components/material/material.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { ColorComponent } from './components/color/color.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
   { path: 'products', component: ProductComponent, canActivate: [authGuard] },
+  { path: 'products/:idProduct', component: ProductDetailsComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
   { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
   { path: 'colors', component: ColorComponent, canActivate: [authGuard] },
@@ -32,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { } 
+export class AppRoutingModule { }

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Color } from '../class/dto/color';
@@ -37,8 +37,8 @@ export class ColorService {
       'Content-Type': 'application/json',
     });
     return this.http.post<Color>(this.colorApi, color, { headers: header });
-
   }
+
   updateColor(color: Color): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
@@ -49,6 +49,7 @@ export class ColorService {
       headers: header,
     });
   }
+
   deleteColor(id: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
@@ -59,4 +60,16 @@ export class ColorService {
       headers: header,
     });
   }
+
+  getColorByName(colorName: any): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append('name', colorName);
+    return  this.http.get(`${this.colorApi}/findByName`, { headers: header, params: params });
+  }
+  
 }

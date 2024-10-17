@@ -46,8 +46,16 @@ export class ProductService {
         params = params.append('max', filter.max.toString());
       }
     }
+    return this.http.get(this.productApi, { headers: header, params: params });
+  }
 
-    return this.http.get(this.productApi, { headers: header, params });
+  getProductEditById(id: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get(`${this.productApi}/edit/${id}`, { headers: header });
   }
 
   getProductById(id: string): Observable<any> {
@@ -79,6 +87,15 @@ export class ProductService {
     });
   }
 
+  deleteProduct(id: string): Observable<void> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.delete<void>(`${this.productApi}/${id}`, { headers: header });
+  }
+
   checkExistsByIdBrand(idBrand: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
@@ -100,4 +117,40 @@ export class ProductService {
     params = params.append('idCategory', idCategory);
     return this.http.get(`${this.productApi}/checkExistsByIdCategory`, { headers: header, params: params });
   }
+
+  checkExistsProductCode(productCode: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append("productCode", productCode);
+
+    return this.http.get(`${this.productApi}/check-exists-product-code`, {headers: header, params: params});
+
+  }
+
+  checkExistsProductName(productName: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append("productName", productName);
+    return this.http.get(`${this.productApi}/check-exists-product-name`, {headers: header, params: params});
+  }
+
+  getByProductCode(productCode: any): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append("productCode", productCode);
+    return this.http.get(`${this.productApi}/get-by-product-code`, {headers: header, params: params});
+  }
+
 }
