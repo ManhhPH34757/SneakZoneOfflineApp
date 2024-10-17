@@ -21,6 +21,8 @@ import { SoleComponent } from './components/sole/sole.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { SizeComponent } from './components/size/size.component';
+import { ColorComponent } from './components/color/color.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { SizeComponent } from './components/size/size.component';
     SoleComponent,
     CustomerComponent,
     StaffComponent,
-    SizeComponent
+    SizeComponent,
+    ColorComponent,
+    ProductDetailsComponent
   ],
   imports: [
     BrowserModule,

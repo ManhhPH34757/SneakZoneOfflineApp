@@ -1,5 +1,5 @@
 export class Size {
-    id: string = '';
+  id: string = '';
   sizeCode: string = '';
   sizeName: string = '';
   description: string = '';

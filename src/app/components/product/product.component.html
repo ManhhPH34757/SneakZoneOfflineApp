@@ -1,18 +1,18 @@
 <div
-  *ngIf="showAlertErrorImages"
+  *ngIf="showAlertError"
   class="alert alert-danger alert-dismissible fade show"
   role="alert"
-  style="position: absolute; top: 15px; right: 30px; z-index: 1000"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
 >
-  Chỉ được chọn tối đa 5 ảnh!
+  {{ alertMessage }}
 </div>
 <div
   *ngIf="showAlertSuccess"
   class="alert alert-success alert-dismissible fade show"
   role="alert"
-  style="position: absolute; top: 15px; right: 30px; z-index: 1000"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
 >
-  Lưu thành công!
+  {{ alertMessage }}
 </div>
 
 <div class="card p-3 mb-3">
@@ -33,6 +33,9 @@
           <div class="text-danger" *ngIf="!checkProductCode">
             * Product code is required
           </div>
+          <div class="text-danger" *ngIf="!checkExistsProductCode">
+            * Product code is exists
+          </div>
         </div>
         <div class="form-group mt-3">
           <label for="productName">Product name:</label>
@@ -45,6 +48,9 @@
           />
           <div class="text-danger" *ngIf="!checkProductName">
             * Product name is required
+          </div>
+          <div class="text-danger" *ngIf="!checkExistsProductName">
+            * Product name is exists
           </div>
         </div>
       </div>
@@ -59,7 +65,7 @@
           >
             <option *ngFor="let brand of brands" [ngValue]="brand.id">
               {{ brand.brandName }}
-            </option> 
+            </option>
           </select>
           <div class="text-danger" *ngIf="!checkBrand">* Brand is required</div>
         </div>
@@ -115,7 +121,7 @@
       <div class="col-12 mt-3" *ngIf="selectedFiles.length > 0">
         <img
           *ngFor="let img of selectedFiles"
-          [src]="'/assets/images/' + img.name"
+          [src]="img.secure_url"
           [alt]="img.name"
           width="100px"
           height="100px"
@@ -142,7 +148,7 @@
         </button>
         <button class="btn btn-outline-info ms-3" (click)="openFilePicker()">
           <iconify-icon icon="flowbite:upload-solid"></iconify-icon> Upload
-          image
+          images
         </button>
         <input
           type="file"
@@ -152,10 +158,18 @@
           style="display: none"
           (change)="onSelectImages($event)"
         />
-        <button class="btn btn-outline-danger ms-3" (click)="clear()">
-          <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+        <button
+          class="btn btn-outline-muted ms-3"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal1"
+        >
+        <iconify-icon icon="fluent:copy-select-24-filled"></iconify-icon> Select
+          images
         </button>
-        <button class="btn btn-outline-secondary ms-3" (click)="openFileImport()">
+        <button
+          class="btn btn-outline-secondary ms-3"
+          (click)="openFileImport()"
+        >
           <iconify-icon icon="mingcute:file-import-line"></iconify-icon> Import
           file
         </button>
@@ -166,6 +180,9 @@
           style="display: none"
           (change)="onSelectFileImport($event)"
         />
+        <button class="btn btn-outline-danger ms-3" (click)="clear()">
+          <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+        </button>
       </div>
     </div>
   </form>
@@ -211,61 +228,57 @@
       <div class="col-2">
         <div class="form-group">
           <label for="filterBrand">Brand:</label>
-          <select
-            name="idBrand"
-            id="filterBrand"
-            class="form-control"
+          <ng-select
+            [items]="brands"
+            bindLabel="brandName"
+            bindValue="id"
             [(ngModel)]="filter.idBrand"
+            class="form-control"
+            name="idBrand"
           >
-            <option *ngFor="let brand of brands" [ngValue]="brand.id">
-              {{ brand.brandName }}
-            </option>
-          </select>
+          </ng-select>
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="filterCategory">Category:</label>
-          <select
-            name="idCategory"
-            id="filterCategory"
-            class="form-control"
+          <ng-select
+            [items]="categories"
+            bindLabel="categoryName"
+            bindValue="id"
             [(ngModel)]="filter.idCategory"
+            class="form-control"
+            name="idCategory"
           >
-            <option *ngFor="let category of categories" [ngValue]="category.id">
-              {{ category.categoryName }}
-            </option>
-          </select>
+          </ng-select>
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="filterMaterial">Material:</label>
-          <select
-            name="idMaterial"
-            id="filterMaterial"
-            class="form-control"
+          <ng-select
+            [items]="materials"
+            bindLabel="materialName"
+            bindValue="id"
             [(ngModel)]="filter.idMaterial"
+            class="form-control"
+            name="idMaterial"
           >
-            <option *ngFor="let material of materials" [ngValue]="material.id">
-              {{ material.materialName }}
-            </option>
-          </select>
+          </ng-select>
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="filterSole">Sole:</label>
-          <select
-            name="idSole"
-            id="filterSole"
-            class="form-control"
+          <ng-select
+            [items]="soles"
+            bindLabel="soleName"
+            bindValue="id"
             [(ngModel)]="filter.idSole"
+            class="form-control"
+            name="idSole"
           >
-            <option *ngFor="let sole of soles" [ngValue]="sole.id">
-              {{ sole.soleName }}
-            </option>
-          </select>
+          </ng-select>
         </div>
       </div>
       <div class="col-1">
@@ -322,28 +335,41 @@
           <button class="btn btn-outline-info" (click)="edit(product)">
             <iconify-icon icon="bxs:edit"></iconify-icon>
           </button>
-          <button class="btn btn-outline-primary ms-2" (click)="edit(product)">
+          <button
+            class="btn btn-outline-primary ms-2"
+            [routerLink]="['/products', product.id]"
+          >
             <iconify-icon
               icon="majesticons:checkbox-list-detail-line"
             ></iconify-icon>
           </button>
-          <button class="btn btn-outline-dark ms-2" (click)="edit(product)">
+          <button
+            class="btn btn-outline-dark ms-2"
+            (click)="delete(product)"
+            [disabled]="!role"
+          >
             <iconify-icon icon="material-symbols:delete"></iconify-icon>
           </button>
         </td>
       </tr>
     </tbody>
   </table>
-  <div class="row">
-    <div class="col-12">
-      <div class="col-1 form-group float-end ps-3 pe-3">
-        <select
-          name="size"
-          id="size"
-          class="form-control"
-          [(ngModel)]="size"
-          (change)="changeSize()"
-        >
+  <div class="row justify-content-center">
+    <div class="col-md-10 d-flex justify-content-between align-items-center">
+      <div class="pagination justify-content-center d-flex flex-wrap">
+        <button class="btn m-1" (click)="goToFirstPage()" [disabled]="currentPage === 0">First</button>
+        <button class="btn m-1" (click)="goToPrevPage()" [disabled]="currentPage === 0">Prev</button>
+        <span *ngFor="let page of displayedPages">
+          <button class="btn m-1" (click)="goToPage(page)" [class.active]="page - 1 === currentPage">
+            {{ page }}
+          </button>
+        </span>
+        <button class="btn m-1" (click)="goToNextPage()" [disabled]="currentPage === totalPages - 1">Next</button>
+        <button class="btn m-1" (click)="goToLastPage()" [disabled]="currentPage === totalPages - 1">Last</button>
+      </div>
+
+      <div class="size form-group d-flex align-items-center">
+        <select name="size" id="size" class="form-control" [(ngModel)]="size" (change)="changeSize()">
           <option value="5">5</option>
           <option value="20">20</option>
           <option value="100">100</option>
@@ -351,47 +377,7 @@
       </div>
     </div>
   </div>
-  <div class="pagination justify-content-center d-flex">
-    <button
-      class="btn m-1"
-      (click)="goToFirstPage()"
-      [disabled]="currentPage === 0"
-    >
-      First
-    </button>
-    <button
-      class="btn m-1"
-      (click)="goToPrevPage()"
-      [disabled]="currentPage === 0"
-    >
-      Prev
-    </button>
 
-    <span *ngFor="let page of displayedPages">
-      <button
-        class="btn m-1"
-        (click)="goToPage(page)"
-        [class.active]="page - 1 === currentPage"
-      >
-        {{ page }}
-      </button>
-    </span>
-
-    <button
-      class="btn m-1"
-      (click)="goToNextPage()"
-      [disabled]="currentPage === totalPages - 1"
-    >
-      Next
-    </button>
-    <button
-      class="btn m-1"
-      (click)="goToLastPage()"
-      [disabled]="currentPage === totalPages - 1"
-    >
-      Last
-    </button>
-  </div>
 </div>
 
 <div
@@ -427,6 +413,53 @@
           Close
         </button>
         <button type="button" class="btn btn-primary" (click)="saveChanges()">
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal1"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div>
+          <input class="form-control" type="text" placeholder="Search by name" [(ngModel)]="searchText" (input)="filterImages()" />
+        </div>
+        <div class="form-group mt-2">
+          <div class="image-list-container">
+            <div class="image-row" *ngFor="let img of images; let i = index">
+              <input
+                type="checkbox"
+                [id]="'checkbox-' + i"
+                [checked]="img.isSelected"
+                style="display: none"
+              />
+              <label [for]="'checkbox-' + i">
+                <img
+                  [src]="img.secure_url"
+                  [alt]="img.display_name"
+                  width="100px"
+                  height="100px"
+                  class="me-2 mb-2"
+                  (keypress)="onKeyPress($event, i)"
+                  (click)="toggleCheckbox(i)"
+                  [style.border]="img.isSelected ? '2px solid blue' : 'none'"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="saveImages()">
           Save changes
         </button>
       </div>

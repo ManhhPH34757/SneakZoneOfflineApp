@@ -1,0 +1,26 @@
+.form {
+      background-color: #fff;
+      border: 1px solid rgb(217, 217, 227);
+      border-radius: 20px;
+      padding: 2rem .7rem .7rem .7rem;
+      text-align: center;
+      font-size: 1.125rem;
+      max-width: 320px;
+    }
+
+    .form-title {
+      color: #000000;
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+    
+    .form-paragraph {
+      margin-top: 10px;
+      font-size: 0.9375rem;
+      color: rgb(105, 105, 105);
+    }
+
+    .toggle-icon {
+      font-size: 2rem; /* To lên tí cho dễ nhìn nè */
+      transition: color 0.3s ease; /* Mượt mà khi đổi màu nha */
+  }

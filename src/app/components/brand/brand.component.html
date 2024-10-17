@@ -1,37 +1,63 @@
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
 <div class="card p-3 mb-3">
     <form>
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="form-group mt-3">
-                  <label for="brandCode">Brand code:</label>
-                  <input id="brandCode" type="text" class="form-control mt-2" [(ngModel)]="brand.brandCode" name="brandCode" [readOnly]="editing"/>
+                    <label for="brandCode">Brand code:</label>
+                    <input id="brandCode" type="text" class="form-control mt-2" [(ngModel)]="brand.brandCode"
+                        name="brandCode" [readOnly]="editing" />
                 </div>
-                <div class="form-group mt-3">
-                  <label for="brandName">Brand name:</label>
-                  <input id="brandName" type="text" class="form-control mt-2" [(ngModel)]="brand.brandName" name="brandName"/>
-                </div>
+                <div *ngIf="!checkBrandCode" class="text-danger fst-italic">{{errorMsgBrandCode}}</div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <label for="brandName">Brand name:</label>
+                    <input id="brandName" type="text" class="form-control mt-2" [(ngModel)]="brand.brandName"
+                        name="brandName" />
+                </div>
+                <div *ngIf="!checkBrandName" class="text-danger fst-italic">{{errorMsgBrandName}}</div>
+            </div>
+            <div class="col-4">
                 <div class="form-group  mt-3">
                     <label for="description">Description:</label>
-                    <input id="description" type="text" class="form-control mt-2" [(ngModel)]="brand.description" name="description" />
+                    <input id="description" type="text" class="form-control mt-2" [(ngModel)]="brand.description"
+                        name="description" />
                 </div>
+                <div *ngIf="!checkBrandDescription" class="text-danger fst-italic">{{errorMsgDescription}}</div>
             </div>
             <div class="col-12 mt-3">
-            <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
-                <iconify-icon icon="gg:add-r"></iconify-icon> Create
-            </button>
-            <button [disabled]="!editing" class="btn btn-outline-primary ms-3" >
-                <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
-            </button>
-            <button class="btn btn-outline-danger ms-3" (click)="clear()">
-                <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
-            </button>
+                <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
+                    <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                </button>
+                <button [disabled]="!editing" class="btn btn-outline-primary ms-3" (click)="onUpdate()">
+                    <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                </button>
+                <button class="btn btn-outline-danger ms-3" (click)="clear()">
+                    <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                </button>
             </div>
         </div>
     </form>
 </div>
 <div class="card p-3">
+    <h3 class="text-center font-monospace">Brand List</h3>
+
     <table class="table">
         <thead>
             <tr>
@@ -49,8 +75,10 @@
                 <td>{{b.brandName}}</td>
                 <td>{{b.description}}</td>
                 <td>
-                    <button class="btn btn-outline-info" (click)="edit(brand)"><iconify-icon icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
-                    <button class="btn btn-outline-danger"><iconify-icon icon="mi:delete"></iconify-icon>Delete</button>
+                    <button class="btn btn-outline-info" (click)="edit(b)"><iconify-icon
+                            icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
+                    <button class="btn btn-outline-danger ms-2" [disabled]="!role"  (click)="delete(b)"><iconify-icon
+                            icon="mi:delete"></iconify-icon>Delete</button>
                 </td>
             </tr>
         </tbody>
