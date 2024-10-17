@@ -1,83 +1,183 @@
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
 
-    <div class="container">
-
-        <h1 class="text-center">CUSTOMER INFORMATION</h1>
-        <div class="card border">
-            <div class="card-body">
-                <form >
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="customerCode">Customer Code</label><input id="customerCode"  type="text" class="form-control" [(ngModel)]="customer.customerCode " name="customerCode" />
-                            </div>
-                            <div class="form-group">
-                                <label for="fullName">Full Name</label><input id="fullName" type="text" class="form-control" [(ngModel)]="customer.fullName" name="password"/>
-                            </div> 
-                            <div class="form-group">
-                                <label for="gender">Gender</label><input id="gender"  type="text" class="form-control" [(ngModel)]="customer.gender" name="gender" />
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">PhoneNumber</label><input id="phoneNumber"  type="text" class="form-control" [(ngModel)]="customer.phoneNumber" name="lastName" />
-                            </div>
-                        </div>                      
-                        <div class="col-6">
-
-                            <div class="form-group">
-                                <label for="address">Adress</label><input id="address"  type="text" class="form-control" [(ngModel)]="customer.address" name="address" />
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label><input id="email"  type="text" class="form-control" [(ngModel)]="customer.email" name="email" />
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Password</label><input id="password"  type="text" class="form-control" [(ngModel)]="customer.password" name="password" />
-                            </div>
-                            <div class="form-group">
-                                <label for="accumulatedPoints">AccumulatedPoints</label><input id="accumulatedPoints"  type="text" class="form-control" [(ngModel)]="customer.accumulatedPoints" name="accumulatedPoints" />
-                            </div>
-                        </div>
-                    </div>
-                    <button  class="btn btn-outline-success" >
-                        <iconify-icon icon="gg:add-r"></iconify-icon> Create
-                      </button>
-                      <button  class="btn btn-outline-primary ms-3" >
-                        <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
-                      </button>
-                      <button class="btn btn-outline-danger ms-3" (click)="resetForm()">
-                        <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
-                      </button>
-                </form>
+<div class="card p-3 mb-3">
+    <h3 class="text-center font-monospace">Customer Information</h3>
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <label for="customerCode">Customer Code: </label>
+                    <input id="customerCode" type="text" class="form-control mt-2" [(ngModel)]="customer.customerCode " [readOnly]="editing"
+                        name="customerCode" />
+                    <div class="text-danger" *ngIf="!checkCustomerCodeEmpty">* Customer code is required</div>
+                    <div class="text-danger" *ngIf="!checkCustomerCodeExists">* Customer code is exists</div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="fullName">Full Name: </label>
+                    <input id="fullName" type="text" class="form-control mt-2" [(ngModel)]="customer.fullName"
+                        name="fullName" />
+                </div>
+                <button [disabled]="editing" class="btn btn-outline-success mt-4 " (click)="onSubmit()">
+                    <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                </button>
+                <button [disabled]="!editing" class="btn btn-outline-primary ms-3 mt-4" (click)="onUpdate()">
+                    <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                </button>
+                <button class="btn btn-outline-danger ms-3 mt-4" (click)="resetForm()">
+                    <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                </button>
+            </div>
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <label for="birthday">Birthday: </label>
+                    <input id="birthday" type="date" class="form-control mt-2" [(ngModel)]="customer.birthday"
+                        name="birthday" />
+                </div>
+                <div class="form-group mt-3">
+                    <label for="phoneNumber">PhoneNumber: </label>
+                    <input id="phoneNumber" type="text" class="form-control mt-2" [(ngModel)]="customer.phoneNumber"
+                        name="phoneNumber" />
+                        <div class="text-danger" *ngIf="!checkPhoneNumberEmpty">* Phone number is required</div>
+                        <div class="text-danger" *ngIf="!checkPhoneNumberExitsts">* Phone number is exists</div>
+                        <div class="text-danger" *ngIf="!checkPhoneNumberSize">* Phone number is not in correct format</div>
+                </div>
+                <div class="form-group mt-4">
+                    <label for="gender">Gender: </label>
+                        <input class="form-check-input mt-2 ms-3" type="radio" id="Male" name="gender"
+                        [(ngModel)]="customer.gender" value="Male">
+                        <label class="form-check-label mt-2 ms-2" for="gender"> &nbsp;Male</label>   
+                        <input class="form-check-input mt-2 ms-3" type="radio" id="FeMale" name="gender"
+                        [(ngModel)]="customer.gender" value="FeMale">
+                        <label class="form-check-label mt-2 ms-2" for="gender"> &nbsp;FeMale</label>   
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <label for="address">Adress: </label>
+                    <input id="address" type="text" class="form-control mt-2" [(ngModel)]="customer.address"
+                        name="address" />
+                </div>
+                <div class="form-group mt-3">
+                    <label for="email">Email: </label>
+                    <input id="email" type="text" class="form-control mt-2" [(ngModel)]="customer.email" name="email" />
+                    <div class="text-danger" *ngIf="!checkEmailExists">* Email is exists</div>
+                    <div class="text-danger" *ngIf="!checkEmail">* Email is not in correct format</div>
+                </div>
             </div>
         </div>
 
-        <h1 class="text-center">List Customer</h1>
+    </form>
+</div>
 
-        <div class="card border">
-            <div class="card-body">
 
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th class="custom-th, text-center">Index</th>
-                        <th class="custom-th, text-center">Customer Code</th>
-                        <th class="custom-th, text-center">Full Name</th>
-                        <th class="custom-th, text-center">PhoneNumber</th>
-                        <th class="custom-th, text-center">Email</th>
-                        <th class="custom-th, text-center">Action</th>
-                    </tr>
-                    <tr *ngFor="let c of customers; index as i" class="text-center">
-                        <td>{{i+1}}</td>
-                        <td>{{c.customerCode}}</td>
-                        <td>{{c.fullName}}</td>
-                        <td>{{c.phoneNumber}}</td>
-                        <td>{{c.email}}</td>
-                        <td>
-                            <button class="btn btn-info">Update</button>
-                            <button class="btn btn-danger" >Delete</button>
-                        </td>
-                    </tr>
-                    
-                </table>
+<div class="card p-3">
+    <h3 class="text-center font-monospace">Customer List</h3>
 
+    <form>
+        <form >
+            <div class="row">
+                <div class="col-10 ps-5 ">
+                    <input
+                    class="form-control me-2" 
+                    type="search" 
+                    placeholder="FullName or PhoneNumber..." 
+                    aria-label="Search"
+                    [(ngModel)]="filter.fullNameOrPhoneNumber"
+                    name="fullNameOrPhoneNumber"
+                >
+                </div>
+                <div class="col-2 ps-5">
+                    <button 
+                    class="btn btn-outline-success" 
+                    type="submit" 
+                    (click)="filters()"
+                    > <iconify-icon icon="wpf:search"></iconify-icon> Search
+                </button>
+                </div>
             </div>
-        </div>
+          </form>
+    </form>
+    <table class="table text-center mt-3">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer Code</th>
+                <th>Full Name</th>
+                <th>Gender</th>
+                <th>Birthday</th>
+                <th>PhoneNumber</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of customers ; index as i" class="text-center">
+                <td>{{i+1}}</td>
+                <td>{{c.customerCode}}</td>
+                <td>{{c.fullName}}</td>
+                <td>{{c.gender}}</td>
+                <td>{{c.birthday}}</td>
+                <td>{{c.phoneNumber}}</td>
+                <td>
+                    <button class="btn btn-outline-info" (click)="edit(c)"><iconify-icon icon="lucide:edit"></iconify-icon></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination justify-content-center d-flex">
+        <button
+          class="btn m-1"
+          (click)="goToFirstPage()"
+          [disabled]="currentPage === 0"
+        >
+          First
+        </button>
+        <button
+          class="btn m-1"
+          (click)="goToPrevPage()"
+          [disabled]="currentPage === 0"
+        >
+          Prev
+        </button>
+    
+        <span *ngFor="let page of displayedPages">
+          <button
+            class="btn m-1"
+            (click)="goToPage(page)"
+            [class.active]="page - 1 === currentPage"
+          >
+            {{ page }}
+          </button>
+        </span>
+    
+        <button
+          class="btn m-1"
+          (click)="goToNextPage()"
+          [disabled]="currentPage === totalPages - 1"
+        >
+          Next
+        </button>
+        <button
+          class="btn m-1"
+          (click)="goToLastPage()"
+          [disabled]="currentPage === totalPages - 1"
+        >
+          Last
+        </button>
+      </div>
 
-    </div>
+</div>

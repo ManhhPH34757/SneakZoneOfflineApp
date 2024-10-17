@@ -1,14 +1,13 @@
-export class CustomerRequest {
+export class CustomerResponse {
     id: string = '';
     customerCode:  string = '';
     fullName:  string = '';
     gender:  string = '';
-    birthday:  string= '';;
+    birthday: string= '';
     phoneNumber:  string = '';
     address:  string = '';
     email:  string = '';
-    password:  string = '';
     accumulatedPoints: number = 0;
-    created_at: string = '';
-    updated_at: string = '';
+    created_at: Date = new Date;
+    updated_at: Date = new Date;
 }
