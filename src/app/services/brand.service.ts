@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Brand } from '../class/dto/brand';
@@ -37,5 +37,15 @@ export class BrandService {
     return this.http.post<Brand>(this.brandApi, brand, { headers: header });
   }
 
+  getBrandByName(brandName: any): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams({});
+    params = params.append('name', brandName);
+    return  this.http.get(`${this.brandApi}/findByName`, { headers: header, params: params });
+  }
+
 }
- 
