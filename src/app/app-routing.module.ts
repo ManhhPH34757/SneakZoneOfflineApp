@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
   { path: 'materials', component: MaterialComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
-  { path: 'staffs', component: StaffComponent, canActivate: [authGuard] },
+  { path: 'staffs', component: StaffComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];

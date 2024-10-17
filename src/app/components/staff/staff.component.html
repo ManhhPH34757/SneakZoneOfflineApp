@@ -1,17 +1,252 @@
-<div class="container">
-      <table class="table">
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+
+<div class="card p-3 mb-3">
+      <h3 class="text-center font-monospace">Staff InFormation</h3>
+      <form>
+            <div class="row">
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="staffCode">StaffCode</label>
+                              <input id="staffCode" type="text" class="form-control mt-2" [(ngModel)]="staff.staffCode"
+                                    name="staffCode" />
+                              <div class="text-danger" *ngIf="!checkstaffCode">
+                                    * Staff Code is required
+                              </div>
+                              <div class="text-danger" *ngIf="!checkstaffCodeExists">
+                                    * Staff Code already exists
+                              </div>
+                        </div>
+
+                  </div>
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="fullName">Full Name</label>
+                              <input id="fullName" type="text" class="form-control mt-2" [(ngModel)]="staff.fullName"
+                                    name="fullName" />
+                              <div class="text-danger" *ngIf="!checkfullName">
+                                    * FullName is required
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="gender"> Gender</label>
+                              <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" id="Male" name="gender"
+                                          [(ngModel)]="staff.gender" value="Male" />
+                                    <label class="form-check-label" for="male">
+                                          &nbsp; Male
+                                    </label>
+                              </div>
+                              <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" id="FeMale" name="gender"
+                                          [(ngModel)]="staff.gender" value="FeMale" />
+                                    <label class="form-check-label" for="female">
+                                          &nbsp; FeMale
+                                    </label>
+                              </div>
+                              <div class="text-danger" *ngIf="!checkgender">
+                                    * Gender is required
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="birthday">Birthday</label>
+                              <input id="birthday" type="date" class="form-control mt-2" [(ngModel)]="staff.birthday"
+                                    name="birthday" />
+                              <div class="text-danger" *ngIf="!checkbirthday">
+                                    * Birthday is required
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="phoneNumber">Phone Number</label>
+                              <input id="phoneNumber" type="text" class="form-control mt-2"
+                                    [(ngModel)]="staff.phoneNumber" name="phoneNumber" />
+                              <div class="text-danger" *ngIf="!checkphoneNumber">
+                                    * PhoneNumber is required
+                              </div>
+                              <div class="text-danger" *ngIf="!checkphoneNumberExists">
+                                    * PhoneNumber already exists
+                              </div>
+                              <div class="text-danger" *ngIf="!checkphoneNumberSize">
+                                    * PhoneNumber must be 10 to 13 characters
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="address">Address</label>
+                              <input id="address" type="text" class="form-control mt-2" [(ngModel)]="staff.address"
+                                    name="address" />
+                              <div class="text-danger" *ngIf="!checkaddress">
+                                    * Address is required
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="email">Email</label>
+                              <input id="email" type="email" class="form-control mt-2" [(ngModel)]="staff.email"
+                                    name="email" />
+                              <div class="text-danger" *ngIf="!checkemail">
+                                    * Email is required
+                              </div>
+                              <div class="text-danger" *ngIf="!checkemailExists">
+                                    * Email already exists
+                              </div>
+                              <div class="text-danger" *ngIf="!checkemailSize">
+                                    * Email must have &commat; followed by a dot.
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="username">Username</label>
+                              <input id="username" type="text" class="form-control mt-2" [(ngModel)]="staff.username"
+                                    name="username" />
+                              <div class="text-danger" *ngIf="!checkusername">
+                                    * Username is required
+                              </div>
+                              <div class="text-danger" *ngIf="!checkusernameExists">
+                                    * Username already exists
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-4">
+                        <div class="form-group mt-3">
+                              <label for="role">Role</label>
+                              <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" id="roleAdmin" name="role"
+                                          [(ngModel)]="staff.role" value="ADMIN">
+                                    <label class="form-check-label" for="role">
+                                          Admin
+                                    </label>
+                              </div>
+                              <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" id="roleUser" name="role"
+                                          [(ngModel)]="staff.role" value="User">
+                                    <label class="form-check-label" for="role">
+                                          User
+                                    </label>
+                              </div>
+                              <div class="text-danger" *ngIf="!checkrole">
+                                    * Role is required
+                              </div>
+                        </div>
+
+                  </div>
+            </div>
+            <div class="col-12 mt-3">
+                  <button class="btn btn-outline-success" [disabled]="editing" (click)="onSubmit()">
+                        <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                  </button>
+                  <button class="btn btn-outline-primary ms-3" [disabled]="!editing" (click)="onUpdate()">
+                        <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                  </button>
+                  <button class="btn btn-outline-danger ms-3" (click)="clear()">
+                        <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                  </button>
+            </div>
+      </form>
+</div>
+<div class="card p-3">
+      <h3 class="text-center font-monospace">Staff List</h3>
+      <form>
+            <div class="row">
+                  <div class="col-12">
+                        <button class="btn btn-outline-secondary float-end" (click)="getAll()">
+                              <iconify-icon icon="material-symbols:all-out-outline"></iconify-icon>
+                              All
+                        </button>
+                        <button class="btn btn-outline-indigo float-end me-2" (click)="filters()">
+                              <iconify-icon icon="mingcute:filter-line"></iconify-icon> Filter
+                        </button>
+                  </div>
+            </div>
+            <div class="row mt-2">
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>StaffCode</label>
+                              <input type="text" class="form-control" [(ngModel)]="filter.staffCode" name="staffCode" />
+                        </div>
+                  </div>
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>FullName</label>
+                              <input type="text" class="form-control" [(ngModel)]="filter.fullName" name="fullName" />
+                        </div>
+                  </div>
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>Gender</label>
+                              <input type="text" class="form-control" [(ngModel)]="filter.gender" name="gender" />
+                        </div>
+                  </div>
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>Email</label>
+                              <input type="text" class="form-control" [(ngModel)]="filter.email" name="email" />
+                        </div>
+                  </div>
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>isActive</label>
+                              <select class="form-control" [(ngModel)]="filter.isActive" name="isActive">
+                                    <option hidden>-- Select --</option>
+                                    <option [ngValue]="1">Active</option>
+                                    <option [ngValue]="0">Inactive</option>
+                              </select>
+                        </div>
+                  </div>
+                  <div class="col-2">
+                        <div class="form-group">
+                              <label>PhoneNumber</label>
+                              <input type="text" class="form-control" [(ngModel)]="filter.phoneNumber"
+                                    name="phoneNumber" />
+                        </div>
+                  </div>
+            </div>
+      </form>
+
+      <table class="table mt-5">
             <tr>
-                  <th>id</th>
+                  <th>STT</th>
                   <th>StaffCode</th>
                   <th>FullName</th>
                   <th>Gender</th>
                   <th>Birthday</th>
-                  <th>Status</th>
                   <th>PhoneNumber</th>
                   <th>Address</th>
                   <th>Email</th>
                   <th>Username</th>
                   <th>Role</th>
+                  <th class="text-center">Status</th>
+                  <th>Action</th>
             </tr>
             <tr *ngFor="let staff of staffs; index as i">
                   <td>{{ i + 1}}</td>
@@ -19,12 +254,43 @@
                   <td>{{staff.fullName}}</td>
                   <td>{{staff.gender}}</td>
                   <td>{{staff.birthday}}</td>
-                  <td>{{staff.isActive}}</td>
                   <td>{{staff.phoneNumber}}</td>
                   <td>{{staff.address}}</td>
                   <td>{{staff.email}}</td>
                   <td>{{staff.username}}</td>
                   <td>{{staff.role}}</td>
+                  <td class="text-center"><button (click)="toggleStatus(staff)" class="btn">
+                              <iconify-icon [icon]="staff.isActive ? 'mdi:toggle-switch' : 'mdi:toggle-switch-off'"
+                                    class="toggle-icon"
+                                    [style.color]=" staff.isActive ? 'green' : 'gray'"></iconify-icon>
+                        </button>
+                  </td>
+                  <td>
+                        <button class="btn btn-outline-info mt-2" (click)="edit(staff)">
+                              <iconify-icon icon="bxs:edit"></iconify-icon>
+                        </button>
+                  </td>
             </tr>
       </table>
+      <div class="pagination justify-content-center d-flex">
+            <button class="btn m-1" (click)="goToFirstPage()" [disabled]="currentPage === 0">
+                  First
+            </button>
+            <button class="btn m-1" (click)="goToPrevPage()" [disabled]="currentPage === 0">
+                  Prev
+            </button>
+
+            <span *ngFor="let page of displayedPages">
+                  <button class="btn m-1" (click)="goToPage(page)" [class.active]="page - 1 === currentPage">
+                        {{ page }}
+                  </button>
+            </span>
+
+            <button class="btn m-1" (click)="goToNextPage()" [disabled]="currentPage === totalPages - 1">
+                  Next
+            </button>
+            <button class="btn m-1" (click)="goToLastPage()" [disabled]="currentPage === totalPages - 1">
+                  Last
+            </button>
+      </div>
 </div>
