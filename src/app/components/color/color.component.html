@@ -19,27 +19,27 @@
         <div class="row">
             <div class="col-4">
                 <div class="form-group mt-3">
-                    <label for="brandCode">Brand code:</label>
-                    <input id="brandCode" type="text" class="form-control mt-2" [(ngModel)]="brand.brandCode"
-                        name="brandCode" [readOnly]="editing" />
+                    <label for="colorCode">Color code:</label>
+                    <input id="colorCode" type="text" class="form-control mt-2" [(ngModel)]="color.colorCode"
+                        name="colorCode" [readOnly]="editing" />
                 </div>
-                <div *ngIf="!checkBrandCode" class="text-danger fst-italic">{{errorMsgBrandCode}}</div>
+                <div *ngIf="!checkColorCode" class="text-danger fst-italic">{{ errorMsgColorCode }}</div>
             </div>
             <div class="col-4">
                 <div class="form-group mt-3">
-                    <label for="brandName">Brand name:</label>
-                    <input id="brandName" type="text" class="form-control mt-2" [(ngModel)]="brand.brandName"
-                        name="brandName" />
+                    <label for="colorName">Color name:</label>
+                    <input id="colorName" type="text" class="form-control mt-2" [(ngModel)]="color.colorName"
+                        name="colorName" />
                 </div>
-                <div *ngIf="!checkBrandName" class="text-danger fst-italic">{{errorMsgBrandName}}</div>
+                <div *ngIf="!checkColorName" class="text-danger fst-italic">{{ errorMsgColorName }}</div>
             </div>
             <div class="col-4">
                 <div class="form-group  mt-3">
                     <label for="description">Description:</label>
-                    <input id="description" type="text" class="form-control mt-2" [(ngModel)]="brand.description"
+                    <input id="description" type="text" class="form-control mt-2" [(ngModel)]="color.description"
                         name="description" />
                 </div>
-                <div *ngIf="!checkBrandDescription" class="text-danger fst-italic">{{errorMsgDescription}}</div>
+                <div *ngIf="!checkColorName" class="text-danger fst-italic">{{ errorMsgDescription }}</div>
             </div>
             <div class="col-12 mt-3">
                 <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
@@ -56,28 +56,28 @@
     </form>
 </div>
 <div class="card p-3">
-    <h3 class="text-center font-monospace">Brand List</h3>
+    <h3 class="text-center font-monospace">Color List</h3>
 
     <table class="table">
         <thead>
             <tr>
                 <th>STT</th>
-                <th>Brand code</th>
-                <th>Brand name</th>
+                <th>Color code</th>
+                <th>Color name</th>
                 <th>Desscription</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let b of brands; index as i">
+            <tr *ngFor="let color of colors; index as i">
                 <td>{{ i + 1}}</td>
-                <td>{{b.brandCode}}</td>
-                <td>{{b.brandName}}</td>
-                <td>{{b.description}}</td>
+                <td>{{color.colorCode}}</td>
+                <td>{{color.colorName}}</td>
+                <td>{{color.description}}</td>
                 <td>
-                    <button class="btn btn-outline-info" (click)="edit(b)"><iconify-icon
+                    <button class="btn btn-outline-info" (click)="edit(color)"><iconify-icon
                             icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
-                    <button class="btn btn-outline-danger ms-2" [disabled]="!role"  (click)="delete(b)"><iconify-icon
+                    <button class="btn btn-outline-danger ms-2" [disabled]="!role" (click)="delete(color)"><iconify-icon
                             icon="mi:delete"></iconify-icon>Delete</button>
                 </td>
             </tr>

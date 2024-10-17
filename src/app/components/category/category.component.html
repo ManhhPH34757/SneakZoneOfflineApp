@@ -1,28 +1,48 @@
-
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
 <div class="card p-3 mb-3">
     <form>
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="form-group mt-3">
                   <label for="categoryCode">Category code:</label>
                   <input id="categoryCode" type="text" class="form-control mt-2" [(ngModel)]="category.categoryCode" name="categoryCode" [readOnly]="editing"/>
                 </div>
-                <div class="form-group mt-3">
-                  <label for="categoryName">Category name:</label>
-                  <input id="categoryName" type="text" class="form-control mt-2" [(ngModel)]="category.categoryName" name="categoryName"/>
-                </div>
+                <div *ngIf="!checkCategoryCode" class="text-danger fst-italic">{{errorMsgCategoryCode}}</div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <label for="categoryName">Category name:</label>
+                    <input id="categoryName" type="text" class="form-control mt-2" [(ngModel)]="category.categoryName" name="categoryName"/>
+                </div>
+                <div *ngIf="!checkCategoryName" class="text-danger fst-italic">{{errorMsgCategoryName}}</div>
+            </div>
+            <div class="col-4">
                 <div class="form-group  mt-3">
                     <label for="description">Description:</label>
                     <input id="description" type="text" class="form-control mt-2" [(ngModel)]="category.description" name="description" />
                 </div>
+                <div *ngIf="!checkCategoryDescription" class="text-danger fst-italic">{{errorMsgDescription}}</div>
             </div>
             <div class="col-12 mt-3">
             <button [disabled]="editing" class="btn btn-outline-success" (click)="onSubmit()">
                 <iconify-icon icon="gg:add-r"></iconify-icon> Create
             </button>
-            <button [disabled]="!editing" class="btn btn-outline-primary ms-3" >
+            <button [disabled]="!editing" class="btn btn-outline-primary ms-3" (click)="onUpdate()">
                 <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
             </button>
             <button class="btn btn-outline-danger ms-3" (click)="clear()">
@@ -33,6 +53,8 @@
     </form>
 </div>
 <div class="card p-3">
+    <h3 class="text-center font-monospace">Category List</h3>
+    
     <table class="table">
         <thead>
             <tr>
@@ -50,8 +72,8 @@
                 <td>{{c.categoryName}}</td>
                 <td>{{c.description}}</td>
                 <td>
-                    <button class="btn btn-outline-info"><iconify-icon icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
-                    <button class="btn btn-outline-danger"><iconify-icon icon="mi:delete"></iconify-icon>Delete</button>
+                    <button class="btn btn-outline-info" (click)="edit(c)"><iconify-icon icon="ant-design:edit-twotone"></iconify-icon>Edit</button>
+                    <button class="btn btn-outline-danger ms-2" [disabled]="!role" (click)="delete(c)"><iconify-icon icon="mi:delete"></iconify-icon>Delete</button>
                 </td>
             </tr>
         </tbody>
