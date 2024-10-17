@@ -1,60 +1,62 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Category } from '../class/dto/category';
+import { Color } from '../class/dto/color';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class CategoryService {
-  private readonly categoryApi = 'http://localhost:8080/api/categories';
+export class ColorService {
+
+  private readonly colorApi = 'http://localhost:8080/api/colors';
 
   constructor(private readonly http: HttpClient) { }
 
-  getAllCategories(): Observable<any> {
+  getAllColor(): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.get(`${this.categoryApi}`, { headers: header });
+    return this.http.get(`${this.colorApi}`, { headers: header });
   }
-  getCategoryById(id: string): Observable<any> {
+
+  getColorById(id: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.get(`${this.categoryApi}/${id}`, { headers: header });
+    return this.http.get(`${this.colorApi}/${id}`, { headers: header });
   }
-  createCategory(category: Category): Observable<any> {
+
+  createColor(color: Color): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.post<Category>(this.categoryApi, category, { headers: header });
+    return this.http.post<Color>(this.colorApi, color, { headers: header });
+
   }
-  updateCategory(category: Category): Observable<any> {
+  updateColor(color: Color): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.put(`${this.categoryApi}/${category.id}`, category, {
+    return this.http.put(`${this.colorApi}/${color.id}`, color, {
       headers: header,
     });
   }
-
-  deleteCategory(id: string): Observable<any> {
+  deleteColor(id: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.delete<void>(`${this.categoryApi}/${id}`, {
+    return this.http.delete<void>(`${this.colorApi}/${id}`, {
       headers: header,
     });
   }
-
 }

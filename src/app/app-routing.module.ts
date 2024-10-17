@@ -11,6 +11,7 @@ import { CategoryComponent } from './components/category/category.component';
 import { MaterialComponent } from './components/material/material.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { ColorComponent } from './components/color/color.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'products', component: ProductComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
   { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
+  { path: 'colors', component: ColorComponent, canActivate: [authGuard] },
   { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
   { path: 'materials', component: MaterialComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
