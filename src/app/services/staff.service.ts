@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders,HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StaffResponse } from '../class/response/staff-response';
 import { StaffRequest } from '../class/request/staff-request';
 import { FilterStaff } from '../class/request/filter-staff';
 
@@ -9,9 +8,9 @@ import { FilterStaff } from '../class/request/filter-staff';
   providedIn: 'root'
 })
 export class StaffService {
-  private staffAPI: string ='http://localhost:8080/api/staffs'
+  private readonly staffAPI: string ='http://localhost:8080/api/staffs'
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private readonly httpClient:HttpClient) { }
 
   getStaff(page: number, size: number, filter?: FilterStaff): Observable<any> {
     const access_token: any = localStorage.getItem('access_token');
@@ -37,7 +36,7 @@ export class StaffService {
       if(filter.email) {
         params = params.append('email', filter.email);
       }
-      if (filter.isActive !== undefined) {  
+      if (filter.isActive !== undefined) {
         params = params.append('isActive', filter.isActive);
       }
       if(filter.phoneNumber) {
