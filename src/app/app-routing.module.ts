@@ -11,6 +11,8 @@ import { CategoryComponent } from './components/category/category.component';
 import { MaterialComponent } from './components/material/material.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { SoleComponent } from './components/sole/sole.component';
+import { SizeComponent } from './components/size/size.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
   { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
   { path: 'materials', component: MaterialComponent, canActivate: [authGuard] },
+  { path: 'soles', component: SoleComponent, canActivate: [authGuard] },
+  { path: 'sizes', component: SizeComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
   { path: 'staffs', component: StaffComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},

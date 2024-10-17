@@ -18,7 +18,12 @@ export class MaterialComponent implements OnInit{
   checkMaterialCode: boolean = true;
   checkMaterialName: boolean = true;
   checkDespription: boolean = true;
-
+  errorMsgMaterialCode: string = '';
+  errorMsgMaterialName: string = '';
+  errorMsgDescription: string = '';
+  showAlertSuccess: boolean = false;
+  showAlertError: boolean = false;
+  alertMessage: string = '';
   loadMaterials():void{
     this.materialService.getAllMaterials().subscribe(data => {
       this.materials=data.result;
@@ -28,58 +33,116 @@ export class MaterialComponent implements OnInit{
   clear(){
     this.material = new Material();
   }
+  checkDuplicateMaterialCode(materialCode: string): boolean {
+    return this.materials.some((material: Material) => material.materialCode === materialCode);
+  }
+  checkDuplicateMaterialName(materialName: string): boolean {
+    return this.materials.some((material: Material) => material.materialName === materialName);
+  }
+  checkDuplicateMaterialNameUpdate(materialName: string): boolean {
+    return this.materials.some((material: Material) => material.materialName === materialName && material.id !== this.material.id);
+  }
+
   ngOnInit(): void {
     this.materialService.getAllMaterials().subscribe((data) => {
       this.loadMaterials();
     });
   }
 
-  onSubmit(): void{
-    if(this.validation()){
-      const id = uuidv4();
-      this.material.id = id;
-      this.materialService.createMaterials(this.material).subscribe(data=>{
+  onSubmit(): void {
+    const id = uuidv4();
+    this.material.id = id;
+    this.material.materialCode = this.material.materialCode.trim();
+    this.material.materialName = this.material.materialName.trim();
+    if (this.validationCreate()) {
+      this.materialService.createMaterials(this.material).subscribe(() => {
         this.loadMaterials();
         this.clear();
       });
     }
   }
-  validation(): boolean{
-    let materialCode = document.getElementById('materialCode') as HTMLInputElement;
-    let materialName = document.getElementById('materialName') as HTMLInputElement;
-    let description = document.getElementById('description') as HTMLInputElement;
+  validationCreate(): boolean {
+    let materialCode = (document.getElementById('materialCode') as HTMLInputElement).value.trim();
+    let materialName = (document.getElementById('materialName') as HTMLInputElement).value.trim();
+    let description = (document.getElementById('description') as HTMLInputElement).value.trim();
+    const alphanumericRegex = /^[a-zA-Z0-9]*$/;
 
-    if(materialCode.value.trim().length == 0){
+    if (materialCode.length == 0) {
       this.checkMaterialCode = false;
+      this.errorMsgMaterialCode = 'Material code is required.';
+    } else if (materialCode.length > 10 || !alphanumericRegex.test(materialCode)) {
+      this.checkMaterialCode = false;
+      this.errorMsgMaterialCode = 'Material code must be alphanumeric and less than or equal to 10 characters.';
+    } else if (this.checkDuplicateMaterialCode(materialCode)) {
+      this.checkMaterialCode = false;
+      this.errorMsgMaterialCode = 'Duplicate Material Code';
     } else {
       this.checkMaterialCode = true;
+      this.errorMsgMaterialCode = '';
     }
 
-    if(materialName.value.trim().length == 0){
+    if (materialName.length == 0) {
       this.checkMaterialName = false;
+      this.errorMsgMaterialName = 'Material name is required.';
+    } else if (materialName.length > 30) {
+      this.checkMaterialName = false;
+      this.errorMsgMaterialName = 'Material name must be less than or equal to 30 characters.';
+    } else if (this.checkDuplicateMaterialName(materialName)) {
+      this.checkMaterialName = false;
+      this.errorMsgMaterialName = 'Duplicate Brand Name';
     } else {
       this.checkMaterialName = true;
+      this.errorMsgMaterialName = '';
     }
 
-    if(description.value.trim().length == 0){
+    if (description.length > 255) {
       this.checkDespription = false;
+      this.errorMsgDescription = 'Description must be less than or equal to 255 characters.';
     } else {
       this.checkDespription = true;
+      this.errorMsgDescription = '';
     }
 
     if (this.checkMaterialCode && this.checkMaterialName && this.checkDespription) {
       return true;
     }
-
     return false;
   }
   edit(materialEdit: Material):void{
     this.materialService.getMaterialById(materialEdit.id).subscribe((data)=>{
       this.material = data.result;
-      this.checkMaterialCode = true;
-      this.checkMaterialName = true;
-      this.checkDespription = true;
     });
   }
-
+  onUpdate():void {
+    if(this.validationCreate()){
+      this.materialService.updateMaterial(this.material).subscribe(data=>{
+        this.loadMaterials();
+        this.clear();
+      });
+    }
+  }
+  delete(material: Material): void {
+    if(confirm('Ban co muon xoa khong ?')){
+      this.materialService.deleteMaterial(material.id).subscribe(data => {
+        this.loadMaterials();
+      });
+    }
+  }
+  displayAlert(alertType: string, message: string): void {
+    if (alertType === 'error') {
+      this.showAlertError = true;
+      this.alertMessage = message;
+      setTimeout(() => {
+        this.alertMessage = '';
+        this.showAlertError = false;
+      }, 3000);
+    } else if (alertType === 'success') {
+      this.showAlertSuccess = true;
+      this.alertMessage = message;
+      setTimeout(() => {
+        this.showAlertSuccess = false;
+        this.alertMessage = '';
+      }, 3000);
+    }
+  }
 }

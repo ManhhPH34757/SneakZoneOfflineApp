@@ -1,1 +1,85 @@
-<p>sole works!</p>
+
+<div class="Container">
+    
+    <div class="card p-3 mb-3">
+        <h3 class="text-center font-monospace">Sole Infomation</h3>
+        <form>
+            <div class="row mt-3">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="soleCode">Sole Code</label>
+                        <input id="soleCode" type="text" class="form-control mt-2" [(ngModel)]="sole.soleCode" name="soleCode">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="soleName">Sole Name</label>
+                        <input id="soleName" type="text" class="form-control mt-2" [(ngModel)]="sole.soleName" name="soleName">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="email">Description</label>
+                        <input id="description" type="text" class="form-control mt-2" [(ngModel)]="sole.description" name="description">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-outline-success" (click)="onSubmit()">
+                    <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                  </button>
+                  <button class="btn btn-outline-primary ms-3" (click)="onUpdate()">
+                    <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                  </button>
+                  <button class="btn btn-outline-danger ms-3"(click)="clear()">
+                    <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                  </button>
+            </div>
+        </form>
+    </div>
+    <div class="card p-3">
+        <h3 class="text-center font-monospace">Sole List</h3>
+    <form>
+        <div class="row mt-2 mb-5">
+            <div class="col-10">
+                <div class="form-group">
+                    <label for="filterSolesName">Sole Name</label>
+                    <input id="filterSolesName" type="text" class="form-control mt-2" name="soleName" />
+                </div>
+            </div>
+            <div  class="col-2 d-flex align-items-end">
+                <button class="btn btn-outline-secondary me-2"><iconify-icon
+                        icon="material-symbols:all-out-outline"></iconify-icon>All</button>
+                <button class="btn btn-outline-indigo "><iconify-icon
+                        icon="mingcute:filter-line"></iconify-icon> Filter</button>
+            </div>
+        </div>
+    </form>
+        <table class="table">
+           <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sole Code</th>
+                <th>Sole Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr *ngFor="let s of soles,index as i">
+                <td>{{i+1}}</td>
+                <td>{{s.soleCode}}</td>
+                <td>{{s.soleName}}</td>
+                <td>{{s.description}}</td>
+                <td>
+                    <button class="btn btn-outline-info"(click)="edit(s)">
+                        <iconify-icon icon="ant-design:edit-twotone"></iconify-icon> Edit</button>
+                    <button class="btn btn-outline-danger ms-3"(click)="delete(s)">
+                        <iconify-icon icon="mi:delete"></iconify-icon> Delete</button>
+                </td>
+            </tr>
+           </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,56 +1,57 @@
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Material } from '../class/dto/material';
+import { Size } from '../class/dto/size';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class MaterialService {
-  private readonly materialApi = 'http://localhost:8080/api/materials';
+export class SizeService {
 
-  constructor(private readonly http: HttpClient) {}
+  private readonly sizeApi = 'http://localhost:8080/api/sizes';
 
-  getAllMaterials(): Observable<any> {
+  constructor(private readonly http: HttpClient) { }
+
+  getAllSize(): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.get(`${this.materialApi}`, { headers: header });
+    return this.http.get(`${this.sizeApi}`, { headers: header });
   }
-  createMaterials(material: Material): Observable<any>{
+  createSize(size: Size): Observable<any>{
     const access_token: any = localStorage.getItem('access_token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.post(this.materialApi,material,{headers: headers});
+    return this.http.post<Size>(this.sizeApi,size,{headers: headers});
   }
-  getMaterialById(id: string): Observable<any> {
+  getSizeById(id: string): Observable<any> {
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return  this.http.get(`${this.materialApi}/${id}`, { headers: header });
-
+    return this.http.get(`${this.sizeApi}/${id}`, { headers: header });
   }
-  updateMaterial(material: Material): Observable<any>{
+  updateSize(size : Size): Observable<any>{
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.put(`${this.materialApi}/${material.id}`, material, { headers: header });
+    return this.http.put(`${this.sizeApi}/${size.id}`, size, { headers: header });
   }
-  deleteMaterial(id:string): Observable<any>{
+  deleteSize(id:string): Observable<any>{
     const access_token = localStorage.getItem('access_token');
     const header = new HttpHeaders({
       Authorization: `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.delete<void>(`${this.materialApi}/${id}`,{
+    return this.http.delete<void>(`${this.sizeApi}/${id}`,{
       headers: header,
     });
   }

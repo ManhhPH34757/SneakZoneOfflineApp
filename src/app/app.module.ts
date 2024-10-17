@@ -20,6 +20,7 @@ import { MaterialComponent } from './components/material/material.component';
 import { SoleComponent } from './components/sole/sole.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { SizeComponent } from './components/size/size.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { StaffComponent } from './components/staff/staff.component';
     MaterialComponent,
     SoleComponent,
     CustomerComponent,
-    StaffComponent
+    StaffComponent,
+    SizeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,44 +1,26 @@
-<div
-  *ngIf="showAlertError"
-  class="alert alert-danger alert-dismissible fade show"
-  role="alert"
-  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
->
-  {{ alertMessage }}
-</div>
-<div
-  *ngIf="showAlertSuccess"
-  class="alert alert-success alert-dismissible fade show"
-  role="alert"
-  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
->
-  {{ alertMessage }}
-</div>
+
 <div class="Container">
     <div class="card p-3 mb-3">
-        <h3 class="text-center font-monospace">Material Infomation</h3>
+        <h3 class="text-center font-monospace ">Size Infomation</h3>
         <form>
             <div class="row mt-3">
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="materialCode">Material Code</label>
-                        <input id="materialCode" type="text" class="form-control mt-2" [(ngModel)]="material.materialCode" name="materialCode">
+                        <label for="sizeCode">Size Code</label>
+                        <input id="sizeCode" type="text" class="form-control mt-2" [(ngModel)]="size.sizeCode" name="sizeCode">
                     </div>
-                    <div *ngIf="!checkMaterialCode" class="text-danger fst-italic">{{errorMsgMaterialCode}}</div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="materialName">Material Name</label>
-                        <input id="materialName" type="text" class="form-control mt-2" [(ngModel)]="material.materialName" name="materialName">
+                        <label for="sizeName">Size Name</label>
+                        <input id="sizeName" type="text" class="form-control mt-2" [(ngModel)]="size.sizeName" name="sizeName">
                     </div>
-                    <div *ngIf="!checkMaterialName" class="text-danger fst-italic">{{errorMsgMaterialName}}</div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="email">Description</label>
-                        <input id="description" type="text" class="form-control mt-2" [(ngModel)]="material.description" name="description">
+                        <input id="description" type="text" class="form-control mt-2" [(ngModel)]="size.description" name="description">
                     </div>
-                    <div *ngIf="!checkDespription" class="text-danger fst-italic">{{errorMsgDescription}}</div>
                 </div>
             </div>
             <div class="col-12 mt-3">
@@ -55,19 +37,19 @@
         </form>
     </div>
     <div class="card p-3">
-        <h3 class="text-center font-monospace">Material List</h3>
+        <h3 class="text-center font-monospace">Size List</h3>
     <form>
         <div class="row mt-2 mb-5">
             <div class="col-10">
                 <div class="form-group">
-                    <label for="filterMaterialsName">Material Name</label>
-                    <input id="filterMaterialsName" type="text" class="form-control mt-2" name="materialName" />
+                    <label for="filterSizesName">Size Name</label>
+                    <input id="filterSizesName" type="text" class="form-control mt-2" name="sizeName" />
                 </div>
             </div>
             <div  class="col-2 d-flex align-items-end">
                 <button class="btn btn-outline-secondary me-2"><iconify-icon
                         icon="material-symbols:all-out-outline"></iconify-icon>All</button>
-                <button class="btn btn-outline-indigo "><iconify-icon
+                <button class="btn btn-outline-indigo " ><iconify-icon
                         icon="mingcute:filter-line"></iconify-icon> Filter</button>
             </div>
         </div>
@@ -76,22 +58,22 @@
            <thead>
             <tr>
                 <th>ID</th>
-                <th>Material Code</th>
-                <th>Material Name</th>
+                <th>Size Code</th>
+                <th>Size Name</th>
                 <th>Description</th>
                 <th>Action</th>
             </tr>
            </thead>
            <tbody>
-            <tr *ngFor="let m of materials,index as i">
+            <tr *ngFor="let si of sizes,index as i">
                 <td>{{i+1}}</td>
-                <td>{{m.materialCode}}</td>
-                <td>{{m.materialName}}</td>
-                <td>{{m.description}}</td>
+                <td>{{si.sizeCode}}</td>
+                <td>{{si.sizeName}}</td>
+                <td>{{si.description}}</td>
                 <td>
-                    <button class="btn btn-outline-info"(click)="edit(m)">
+                    <button class="btn btn-outline-info"(click)="edit(si)">
                         <iconify-icon icon="ant-design:edit-twotone"></iconify-icon> Edit</button>
-                    <button class="btn btn-outline-danger ms-3"(click)="delete(m)">
+                    <button class="btn btn-outline-danger ms-3"(click)="delete(si)">
                         <iconify-icon icon="mi:delete"></iconify-icon> Delete</button>
                 </td>
             </tr>
@@ -99,3 +81,4 @@
         </table>
     </div>
 </div>
+
