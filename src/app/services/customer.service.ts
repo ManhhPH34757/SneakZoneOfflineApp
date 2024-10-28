@@ -8,9 +8,9 @@ import { FilterCustomer } from '../class/request/filter-customer';
   providedIn: 'root'
 })
 export class CustomerService {
-  private customerApi: string = "http://localhost:8080/api/customers";
+  private readonly customerApi: string = "http://localhost:8080/api/customers";
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   getAllCustomers(page: number, size: number, filter?: FilterCustomer): Observable<any>{
     const access_token: any = localStorage.getItem('access_token');
@@ -38,7 +38,7 @@ export class CustomerService {
     });
     return this.http.post(`${this.customerApi}`,customer, { headers: header });
   }
-   
+
   updateCustomer( customer: CustomerRequest): Observable<any>{
     const access_token = localStorage.getItem('access_token');
     const header =  new HttpHeaders({
@@ -97,6 +97,15 @@ export class CustomerService {
     params = params.append("email", email);
 
     return this.http.get(`${this.customerApi}/checkEmail`, {headers: header, params: params});
+  }
+
+  getForOrders(): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header =  new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type':'application/json'
+    });
+    return this.http.get(`${this.customerApi}/get-for-orders`, {headers: header});
   }
 
 }

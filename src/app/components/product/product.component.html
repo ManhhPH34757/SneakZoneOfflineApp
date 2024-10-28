@@ -187,7 +187,7 @@
     </div>
   </form>
 </div>
-<div class="card p-3">
+<div class="card p-3 mb-0">
   <h3 class="text-center font-monospace">Product List</h3>
   <form>
     <div class="row">
@@ -330,7 +330,7 @@
         <td>{{ product.categoryName }}</td>
         <td>{{ product.materialName }}</td>
         <td>{{ product.soleName }}</td>
-        <td>{{ product.quantity }}</td>
+        <td>{{ product.quantity | thousandSeparator }}</td>
         <td>
           <button class="btn btn-outline-info" (click)="edit(product)">
             <iconify-icon icon="bxs:edit"></iconify-icon>

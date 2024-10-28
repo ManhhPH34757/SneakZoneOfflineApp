@@ -13,6 +13,7 @@ export class Order {
   totalPayouts: number = 0;
   orderType: string = '';
   status: string = '';
+  shippingStatus: string = '';
   createdAt: string = '';
   updatedAt: string = '';
 }

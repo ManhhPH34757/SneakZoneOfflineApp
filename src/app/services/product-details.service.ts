@@ -65,4 +65,39 @@ export class ProductDetailsService {
     return this.http.get(`${this.productDetailsApi}/exists-products`,  { headers: header, params: params });
   }
 
+  deleteProductDetails(id: string): void {
+
+  }
+
+  getProductDetailsResponse(productName: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+
+    let params = new HttpParams({});
+    params = params.append('productName', productName);
+
+    return this.http.get(`${this.productDetailsApi}/list-products-for-order`,  { headers: header, params: params });
+  }
+
+  getById(id: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get(`${this.productDetailsApi}/get-by-id/${id}`,  { headers: header });
+  }
+
+  getProductDetailsResponseById(id: string): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const header = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get(`${this.productDetailsApi}/get-product-details-response-by-id/${id}`,  { headers: header });
+  }
+
 }
