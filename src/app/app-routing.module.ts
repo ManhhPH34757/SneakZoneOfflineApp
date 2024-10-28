@@ -15,13 +15,16 @@ import { SoleComponent } from './components/sole/sole.component';
 import { SizeComponent } from './components/size/size.component';
 import { ColorComponent } from './components/color/color.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+import { ListOrdersComponent } from './components/list-orders/list-orders.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
   { path: 'products', component: ProductComponent, canActivate: [authGuard] },
   { path: 'products/:idProduct', component: ProductDetailsComponent, canActivate: [authGuard] },
-  { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
+  { path: 'create-orders', component: OrderComponent, canActivate: [authGuard] },
+  { path: 'invoices', component: ListOrdersComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
   { path: 'brands', component: BrandComponent, canActivate: [authGuard] },
   { path: 'colors', component: ColorComponent, canActivate: [authGuard] },
   { path: 'categories', component: CategoryComponent, canActivate: [authGuard] },
@@ -30,6 +33,7 @@ const routes: Routes = [
   { path: 'sizes', component: SizeComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
   { path: 'staffs', component: StaffComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
+  { path: 'coupons', component: CouponsComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];

@@ -23,6 +23,13 @@ import { StaffComponent } from './components/staff/staff.component';
 import { SizeComponent } from './components/size/size.component';
 import { ColorComponent } from './components/color/color.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { ThousandSeparatorPipe } from './utils/thousand-separator.pipe';
+import { ThousandSeparatorDirective } from './utils/thousand-separator.directive';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ListOrdersComponent } from './components/list-orders/list-orders.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +50,11 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     StaffComponent,
     SizeComponent,
     ColorComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CouponsComponent,
+    ThousandSeparatorPipe,
+    ThousandSeparatorDirective,
+    ListOrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +63,9 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     ReactiveFormsModule,
     HttpClientModule,
     NgSelectModule,
+    QRCodeModule,
+    ZXingScannerModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent],
