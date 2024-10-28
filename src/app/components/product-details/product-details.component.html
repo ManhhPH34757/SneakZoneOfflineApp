@@ -22,7 +22,7 @@
             <td>{{ product.categoryName }}</td>
             <td>{{ product.materialName }}</td>
             <td>{{ product.soleName }}</td>
-            <td>{{ product.quantity }}</td>
+            <td>{{ product.quantity | thousandSeparator }}</td>
           </tr>
         </tbody>
       </table>
@@ -32,34 +32,34 @@
         <div class="form-group col-6">
           <label for="">Color:</label>
           <ng-select
-                [items]="colors"
-                bindLabel="colorName"
-                bindValue="id"
-                class="form-control"
-                [(ngModel)]="selectedColors"
-                name="idColor"
-                [multiple]="true"
-                [closeOnSelect]="false"
-                [hideSelected]="true"
-                (change)="generateProduct()"
-              >
-              </ng-select>
+            [items]="colors"
+            bindLabel="colorName"
+            bindValue="id"
+            class="form-control"
+            [(ngModel)]="selectedColors"
+            name="idColor"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            [hideSelected]="true"
+            (change)="generateProduct()"
+          >
+          </ng-select>
         </div>
         <div class="form-group col-6">
           <label for="">Size:</label>
           <ng-select
-                [items]="sizes"
-                bindLabel="sizeName"
-                bindValue="id"
-                class="form-control"
-                [(ngModel)]="selectedSizes"
-                name="idSize"
-                [multiple]="true"
-                [closeOnSelect]="false"
-                [hideSelected]="true"
-                (change)="generateProduct()"
-              >
-              </ng-select>
+            [items]="sizes"
+            bindLabel="sizeName"
+            bindValue="id"
+            class="form-control"
+            [(ngModel)]="selectedSizes"
+            name="idSize"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            [hideSelected]="true"
+            (change)="generateProduct()"
+          >
+          </ng-select>
         </div>
       </form>
     </div>
@@ -81,10 +81,33 @@
     <tbody>
       <tr *ngFor="let product of productDetailsGenerate; index as i">
         <td>{{ i + 1 }}</td>
-        <td>{{ product.productName }} ( {{ product.colorName }} - {{ product.sizeName }} )</td>
-        <td style="width: 100px;"><input type="number" class="form-control" [(ngModel)]="product.weight"></td>
-        <td style="width: 180px;"><input type="number" class="form-control" [(ngModel)]="product.price"></td>
-        <td style="width: 100px;"><input type="number" class="form-control" [(ngModel)]="product.quantity"></td>
+        <td>
+          {{ product.productName }} ( {{ product.colorName }} -
+          {{ product.sizeName }} )
+        </td>
+        <td style="width: 100px">
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="product.weight"
+          />
+        </td>
+        <td style="width: 180px">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="product.price"
+            appThousandSeparator
+          />
+        </td>
+        <td style="width: 150px">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="product.quantity"
+            appThousandSeparator
+          />
+        </td>
         <td>
           <button class="btn btn-outline-dark" (click)="remove(i)">
             <iconify-icon icon="material-symbols:delete"></iconify-icon> Delete
@@ -94,23 +117,44 @@
     </tbody>
   </table>
   <div class="col-12">
-    <button class="btn btn-outline-success float-end me-5" (click)="createProductDetails()">
+    <button
+      class="btn btn-outline-success float-end me-5"
+      (click)="createProductDetails()"
+    >
       <iconify-icon icon="weui:done2-filled"></iconify-icon> Done
     </button>
   </div>
 </div>
 
-<div class="card p-3">
+<div class="card p-3 mb-0">
   <div class="col-12">
     <h3 class="text-center font-monospace">List product</h3>
-    <button class="btn btn-outline-info float-end me-5" [disabled]="!isAnyRowSelected" (click)="updateProductDetails()">
+    <button
+        class="btn btn-outline-dark float-end me-5"
+        [disabled]="!isAnyRowSelected"
+        (click)="downloadSelectedQR()"
+      >
+        <iconify-icon icon="bi:qr-code"></iconify-icon> Export QR
+      </button>
+      <button
+      class="btn btn-outline-info float-end me-3"
+      [disabled]="!isAnyRowSelected"
+      (click)="updateProductDetails()"
+    >
       <iconify-icon icon="dashicons:update"></iconify-icon> Update
     </button>
   </div>
   <table class="table mt-2">
     <thead>
       <tr>
-        <th><input type="checkbox" #selectAllCheckbox (change)="selectAll($event)" class="btn"></th>
+        <th>
+          <input
+            type="checkbox"
+            #selectAllCheckbox
+            (change)="selectAll($event)"
+            class="btn"
+          />
+        </th>
         <th>#</th>
         <th>Product</th>
         <th>Weight</th>
@@ -122,26 +166,58 @@
     <tbody>
       <tr *ngFor="let product of productDetails; index as i">
         <td>
-          <input type="checkbox" [(ngModel)]="product.selected" (change)="onSelectRow($event, product.id)" class="btn">
+          <input
+            type="checkbox"
+            [(ngModel)]="product.selected"
+            (change)="onSelectRow($event, product.id)"
+            class="btn"
+          />
         </td>
         <td>{{ i + 1 }}</td>
-        <td>{{ product.productName }} ( {{ product.colorName }} - {{ product.sizeName }} )</td>
-        <td style="width: 100px;">
-          <input type="number" class="form-control" [(ngModel)]="product.weight" [readOnly]="!product.selected">
+        <td>
+          {{ product.productName }} ( {{ product.colorName }} -
+          {{ product.sizeName }} )
         </td>
-        <td style="width: 180px;">
-          <input type="number" class="form-control" [(ngModel)]="product.price" [readOnly]="!product.selected">
+        <td style="width: 100px">
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="product.weight"
+            step="0.1"
+            [readOnly]="!product.selected"
+          />
         </td>
-        <td style="width: 100px;">
-          <input type="number" class="form-control" [(ngModel)]="product.quantity" [readOnly]="!product.selected">
+        <td style="width: 180px">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="product.price"
+            [readOnly]="!product.selected"
+            appThousandSeparator
+          />
+        </td>
+        <td style="width: 150px">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="product.quantity"
+            [readOnly]="!product.selected"
+            appThousandSeparator
+          />
         </td>
         <td>
-          <button class="btn btn-outline-dark" (click)="delete(product.id)" [disabled]="!role">
+          <button
+            class="btn btn-outline-dark ms-2"
+            (click)="delete(product.id)"
+            [disabled]="!role"
+          >
             <iconify-icon icon="material-symbols:delete"></iconify-icon> Delete
           </button>
+          <div id="qr-code-{{ i }}" style="display: none;">
+            <qrcode #qrcodeElement [qrdata]="product.id | json" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-

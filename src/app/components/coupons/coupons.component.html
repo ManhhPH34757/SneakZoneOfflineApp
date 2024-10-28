@@ -1,0 +1,166 @@
+<div *ngIf="showAlertError" class="alert alert-danger alert-dismissible fade show" role="alert"
+    style="position: fixed; top: 15px; right: 30px; z-index: 1000">
+    {{ alertMessage }}
+</div>
+<div *ngIf="showAlertSuccess" class="alert alert-success alert-dismissible fade show" role="alert"
+    style="position: fixed; top: 15px; right: 30px; z-index: 1000">
+    {{ alertMessage }}
+</div>
+<div class="container">
+    <div class="card p-3 mb-3">
+        <h3 class="text-center font-monospace">Coupons Infomation</h3>
+        <form>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group mt-3">
+                        <label for="couponsCode">Coupon Code</label>
+                        <input type="text" id="couponsCode" class="form-control mt-2" [(ngModel)]="coupon.couponsCode"
+                            name="couponsCode">
+                        <div class="text-danger" *ngIf="!checkCouponsCode">
+                            {{errorMsgCouponsCode}}
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="couponsName">Coupon Name</label>
+                        <input type="text" id="couponsName" class="form-control mt-2" [(ngModel)]="coupon.couponsName"
+                            name="couponsName">
+                        <div class="text-danger" *ngIf="!checkCouponsName">
+                            {{errorMsgCouponsName}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group mt-3">
+                        <label for="couponsPrice">Coupon Price</label>
+                        <input type="number" id="couponsPrice" class="form-control mt-2"
+                            [(ngModel)]="coupon.couponsPrice" name="couponsPrice">
+                        <!-- <div class="text-danger" *ngIf="!checkCouponsPrice">
+                                {{errorMsgCouponsPrice}}
+                        </div> -->
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" class="form-control mt-2" [(ngModel)]="coupon.quantity"
+                            name="quantity">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="conditions">Conditions</label>
+                        <input type="number" id="conditions" class="form-control mt-2" [(ngModel)]="coupon.conditions"
+                            name="conditions">
+                        <!-- <div class="text-danger" *ngIf="!checkCouponsConditions">
+                                {{errorMsgCouponsConditions}}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group mt-3">
+                        <label for="startDate">StartDate</label>
+                        <input type="datetime-local" id="startDate" class="form-control mt-2"
+                            [(ngModel)]="coupon.startDate" name="startDate">
+                        <div class="text-danger" *ngIf="!checkCouponsStartDate">
+                            {{errorMsgCouponsStartDate}}
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="endDate">EndDate</label>
+                        <input type="datetime-local" id="endDate" class="form-control mt-2" [(ngModel)]="coupon.endDate"
+                            name="endDate">
+                        <div class="text-danger" *ngIf="!checkCouponsEndDate">
+                            {{errorMsgCouponsEndDate}}
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-success mt-5" [disabled]="editing" (click)="onSubmit()">
+                        <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                    </button>
+                    <button class="btn btn-outline-primary ms-3 mt-5" [disabled]="!editing" (click)="onUpdate()">
+                        <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                    </button>
+                    <button class="btn btn-outline-danger ms-3 mt-5" (click)="clear()">
+                        <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="card p-3">
+        <h3 class="text-center font-monospace">Coupons List</h3>
+
+        <form>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-outline-indigo float-end" (click)="filters()">
+                        <iconify-icon icon="mingcute:filter-line"></iconify-icon> Filter
+                    </button>
+                    <button class="btn btn-outline-secondary float-end me-2">
+                        <iconify-icon icon="material-symbols:all-out-outline"></iconify-icon>
+                        All
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Coupons Code:</label>
+                        <input type="text" class="form-control" [(ngModel)]="filter.couponsCode" name="couponsCode">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Coupons Name:</label>
+                        <input type="text" class="form-control" [(ngModel)]="filter.couponsName" name="couponsName">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Start</label>
+                        <input type="datetime-local" class="form-control" [(ngModel)]="filter.startDate"
+                            name="startDate">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>End</label>
+                        <input type="datetime-local" class="form-control" [(ngModel)]="filter.endDate" name="endDate">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="table mt-5">
+            <tr>
+                <th>#</th>
+                <th>Coupon Code</th>
+                <th>Coupon Name</th>
+                <th>Coupon Price</th>
+                <th>Quantity</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Active</th>
+                <th>Action</th>
+            </tr>
+            <tr *ngFor="let c of coupons; index as i">
+                <td>{{i+1}}</td>
+                <td>{{c.couponsCode}}</td>
+                <td>{{c.couponsName}}</td>
+                <td>{{c.couponsPrice}}</td>
+                <td>{{c.quantity}}</td>
+                <td>{{formatDate(c.startDate)}}</td>
+                <td>{{formatDate(c.endDate)}}</td>
+                <td><button (click)="toggleStatus(c)" class="btn">
+                        <iconify-icon [icon]="c.isActive ? 'mdi:toggle-switch' : 'mdi:toggle-switch-off'"
+                            class="toggle-icon" [style.color]=" c.isActive ? 'green' : 'gray'"></iconify-icon>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-outline-info mt-2" (click)="edit(c)">
+                        <iconify-icon icon="bxs:edit"></iconify-icon>
+                    </button>
+                    <button class="btn btn-outline-dark mt-2 ms-2" [disabled]="!role" (click)="delete(c)">
+                        <iconify-icon icon="material-symbols:delete"></iconify-icon>
+                    </button>
+                </td>
+
+            </tr>
+        </table>
+    </div>

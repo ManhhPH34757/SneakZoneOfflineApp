@@ -168,7 +168,6 @@ export class ColorComponent implements OnInit {
       this.checkColorName = true;
       this.errorMsgColorName = '';
     }
-
     if (description.length > 255) {
       this.checkColorDescription = false;
       this.errorMsgDescription = 'Description must be less than or equal to 255 characters.';
