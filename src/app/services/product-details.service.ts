@@ -64,15 +64,6 @@ export class ProductDetailsService {
 
     return this.http.get(`${this.productDetailsApi}/exists-products`,  { headers: header, params: params });
   }
-  // findTop5ProductsByPeriod(priod: string): Observable<any> {
-  //   const access_token = localStorage.getItem('access_token');
-  //   const header = new HttpHeaders({
-  //     Authorization: `Bearer ${access_token}`,
-  //     'Content-Type': 'application/json',
-  //   });
-
-<<<<<<< HEAD
-=======
 
   // findTop5ProductsByPeriod(priod: string): Observable<any> {
   //   const access_token = localStorage.getItem('access_token');
@@ -81,7 +72,6 @@ export class ProductDetailsService {
   //     'Content-Type': 'application/json',
   //   });
 
->>>>>>> 24aa15bd2783b0bb54519702a4d410cff297ef28
   //   let params = new HttpParams({});
   //   params = params.append('priod', priod);
 
@@ -106,8 +96,6 @@ export class ProductDetailsService {
   //     params: params,
   //   });
   // }
-<<<<<<< HEAD
-=======
 
   deleteProductDetails(id: string): void {
 
@@ -144,7 +132,5 @@ export class ProductDetailsService {
     return this.http.get(`${this.productDetailsApi}/get-product-details-response-by-id/${id}`,  { headers: header });
   }
 
-
->>>>>>> 24aa15bd2783b0bb54519702a4d410cff297ef28
 }
 

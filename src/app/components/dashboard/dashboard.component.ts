@@ -8,11 +8,7 @@ import { ProductDetailsService } from '../../services/product-details.service';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent 
-<<<<<<< HEAD
 // implements OnInit 
-=======
-//implements OnInit 
->>>>>>> 24aa15bd2783b0bb54519702a4d410cff297ef28
 {
   chart: any;
   isMonthlyVisible: boolean = false;
@@ -57,13 +53,10 @@ export class DashboardComponent
   //   Chart.register(...registerables);
   //   await this.loadTopProducts('MONTH');
   //   await this.loadRevenuePriod('MONTH');
-<<<<<<< HEAD
   //   await this.createRevenueChart('MONTH');
-=======
   //   if (this.revenuePriod.length > 0) {
   //     await this.createRevenueChart('MONTH');
   //   }
->>>>>>> 24aa15bd2783b0bb54519702a4d410cff297ef28
   // }
 
   createRevenueChart(period: string) {
@@ -123,16 +116,9 @@ export class DashboardComponent
 
   // async switchToYearly() {
   //   this.toggleButtons();
-<<<<<<< HEAD
   //   this.loadTopProducts('year');
   //   await this.loadRevenuePriod('year');
   //   await this.createRevenueChart('year');
   // }
-  
-=======
-  //   this.loadTopProducts('YEAR');
-  //   await this.loadRevenuePriod('YEAR');
-  //   await this.createRevenueChart('YEAR');
-  // }
->>>>>>> 24aa15bd2783b0bb54519702a4d410cff297ef28
+
 }
