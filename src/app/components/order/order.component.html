@@ -1,4 +1,646 @@
-<div class="card p-3">
-  <h3 class="font-monospace">order works!</h3>
-
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
 </div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+
+<div class="card p-3 mb-0">
+  <div class="card-body">
+    <!-- Button to create a new order -->
+    <div class="row">
+      <div class="col-12">
+        <div class="float-end">
+          <button
+            type="button"
+            class="btn btn-outline-success"
+            (click)="createOrder()"
+          >
+            <iconify-icon icon="carbon:result-new"></iconify-icon> New Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="orders.length != 0">
+      <!-- Tabs navs -->
+      <ul class="nav nav-tabs mb-3" id="ex1">
+        <li *ngFor="let order of orders; index as i" class="nav-item">
+          <a
+            class="nav-link fs-3 fw-bold"
+            [class.active]="activeTab === i"
+            (click)="selectTab(i)"
+            id="tab-{{ i }}"
+            role="tab"
+            href="javascript:void(0);"
+          >
+            {{ order.orderCode }}
+            <iconify-icon
+              class="ms-2"
+              (click)="deleteTab(order.id)"
+              icon="mdi:close-outline"
+              onkeypress=""
+              style="color: red"
+            ></iconify-icon>
+          </a>
+        </li>
+      </ul>
+      <!-- Tabs navs -->
+
+      <!-- Tabs content -->
+      <div class="tab-content" id="ex1-content">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between align-items-center">
+            <h3 class="font-monospace title">Cart</h3>
+            <div class="ms-auto">
+              <button
+                class="btn btn-outline-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal2"
+              >
+                <iconify-icon
+                  icon="material-symbols:box-add-outline"
+                ></iconify-icon>
+                Add Product
+              </button>
+              <button
+                class="btn btn-outline-indigo ms-2"
+                (click)="openModal(exampleModal3)"
+              >
+                <iconify-icon icon="mdi:qrcode-scan"></iconify-icon> Scan
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="orderDetails.length != 0">
+          <div class="mt-2">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ord of orderDetails; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ ord.productName }}</td>
+                  <td *ngIf="ord.price_old != ord.price_new">
+                    <span style="text-decoration: line-through"
+                      ><small
+                        >{{ ord.price_old | thousandSeparator }} đ</small
+                      ></span
+                    >
+                    {{ ord.price_new | thousandSeparator }} đ
+                  </td>
+                  <td *ngIf="ord.price_old == ord.price_new">
+                    {{ ord.price_new | thousandSeparator }} đ
+                  </td>
+                  <td style="width: 100px">
+                    <input
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="ord.quantity"
+                      (change)="changeQuantity(ord)"
+                    />
+                  </td>
+                  <td>{{ ord.totalPrice | thousandSeparator }} đ</td>
+                  <td>
+                    <button
+                      class="btn btn-outline-danger"
+                      (click)="deleteProductInOrder(ord)"
+                    >
+                      <iconify-icon
+                        icon="icomoon-free:box-remove"
+                      ></iconify-icon>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <h5 class="font-monospace pt-3 ps-3">
+                Customer Information
+                <span *ngIf="orderSelect.idCustomer == ''"> - Khách lẻ </span>
+              </h5>
+            </div>
+            <div class="col-4">
+              <ng-select
+                [items]="customers"
+                bindLabel="fullName"
+                bindValue="id"
+                class="form-control"
+                name="customerName"
+                [(ngModel)]="orderSelect.idCustomer"
+                [searchFn]="customSearchFn"
+                [clearable]="true"
+                (change)="setOrderCustomer()"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  <div class="d-flex flex-column">
+                    <span>{{ item.fullName }}</span>
+                    <small>{{ item.phoneNumber }}</small>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-2">
+              <button class="btn btn-outline-dark-light">
+                <iconify-icon
+                  icon="lsicon:user-new-filled"
+                  width="1.2em"
+                  height="1.2em"
+                ></iconify-icon>
+                New Customer
+              </button>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5" *ngIf="orderSelect.idCustomer != ''">
+              <ul class="ms-5 list-group" style="line-height: 220%">
+                <li class="list-group-item list-group-item-primary">
+                  <strong
+                    ><iconify-icon
+                      icon="icon-park-twotone:edit-name"
+                    ></iconify-icon>
+                    Full name:
+                  </strong>
+                  {{ customer.fullName }}
+                </li>
+                <li class="list-group-item list-group-item-primary">
+                  <strong
+                    ><iconify-icon icon="clarity:email-solid"></iconify-icon>
+                    Email:
+                  </strong>
+                  {{ customer.email }}
+                </li>
+                <li class="list-group-item list-group-item-primary">
+                  <strong
+                    ><iconify-icon icon="gg:phone"></iconify-icon> Phone number:
+                  </strong>
+                  {{ customer.phoneNumber }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-7"></div>
+            <div class="col-1">
+              <label class="switch">
+                <input
+                  id="OrderType"
+                  [checked]="orderSelect.transportPrice != 0"
+                  type="checkbox"
+                  (change)="setDelivery()"
+                />
+                <div class="slider">
+                  <div class="circle">
+                    <svg
+                      class="cross"
+                      xml:space="preserve"
+                      style="enable-background: new 0 0 512 512"
+                      viewBox="0 0 365.696 365.696"
+                      y="0"
+                      x="0"
+                      height="6"
+                      width="6"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g>
+                        <path
+                          data-original="#000000"
+                          fill="currentColor"
+                          d="M243.188 182.86 356.32 69.726c12.5-12.5 12.5-32.766 0-45.247L341.238 9.398c-12.504-12.503-32.77-12.503-45.25 0L182.86 122.528 69.727 9.374c-12.5-12.5-32.766-12.5-45.247 0L9.375 24.457c-12.5 12.504-12.5 32.77 0 45.25l113.152 113.152L9.398 295.99c-12.503 12.503-12.503 32.769 0 45.25L24.48 356.32c12.5 12.5 32.766 12.5 45.247 0l113.132-113.132L295.99 356.32c12.503 12.5 32.769 12.5 45.25 0l15.081-15.082c12.5-12.504 12.5-32.77 0-45.25zm0 0"
+                        ></path>
+                      </g>
+                    </svg>
+                    <svg
+                      class="checkmark"
+                      xml:space="preserve"
+                      style="enable-background: new 0 0 512 512"
+                      viewBox="0 0 24 24"
+                      y="0"
+                      x="0"
+                      height="10"
+                      width="10"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g>
+                        <path
+                          class=""
+                          data-original="#000000"
+                          fill="currentColor"
+                          d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div class="col-4">
+              <h4
+                *ngIf="orderSelect.transportPrice == 0"
+                class="font-monospace"
+              >
+                InStore
+              </h4>
+              <h4
+                *ngIf="orderSelect.transportPrice != 0"
+                class="font-monospace"
+              >
+                Delivery
+              </h4>
+            </div>
+            <div class="col-7">
+              <div class="card p-3">
+                <div *ngIf="orderSelect.transportPrice != 0">
+                  <h5 class="font-monospace">Delivery Information</h5>
+                  <form>
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control mt-3"
+                            placeholder="Enter the full name"
+                            [(ngModel)]="orderSelect.customerName"
+                            name="customerName"
+                          />
+                          <div class="text-danger" *ngIf="!checkCustomerName">
+                            * Customer name is required
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <ng-select
+                            [items]="provinces"
+                            bindLabel="province_name"
+                            bindValue="province_id"
+                            class="form-control mt-3"
+                            name="province"
+                            [(ngModel)]="selectedProvince"
+                            (change)="onProvinceChange($event)"
+                          >
+                          </ng-select>
+                          <ng-container *ngIf="!selectedProvince">
+                            <span class="custom-placeholder"
+                              >Select a province</span
+                            >
+                          </ng-container>
+                        </div>
+                        <div class="text-danger" *ngIf="!checkCustomerProvince">
+                          * Province is required
+                        </div>
+                        <div class="form-group">
+                          <ng-select
+                            [items]="wards"
+                            bindLabel="ward_name"
+                            bindValue="ward_id"
+                            class="form-control mt-3"
+                            name="ward"
+                            [(ngModel)]="selectedWard"
+                          >
+                          </ng-select>
+                          <ng-container *ngIf="!selectedWard">
+                            <span class="custom-placeholder"
+                              >Select a ward</span
+                            >
+                          </ng-container>
+                        </div>
+                        <div class="text-danger" *ngIf="!checkCustomerWard">
+                          * Ward is required
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control mt-3"
+                            placeholder="Enter the phone number"
+                            [(ngModel)]="orderSelect.phoneNumber"
+                            name="phoneNumber"
+                          />
+                          <div class="text-danger" *ngIf="!checkCustomerPhone">
+                            * Phone number is required
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <ng-select
+                            [items]="districts"
+                            bindLabel="district_name"
+                            bindValue="district_id"
+                            class="form-control mt-3"
+                            name="district"
+                            [(ngModel)]="selectedDistrict"
+                            (change)="onDistrictChange($event)"
+                          >
+                          </ng-select>
+                          <ng-container *ngIf="!selectedDistrict">
+                            <span class="custom-placeholder"
+                              >Select a district</span
+                            >
+                          </ng-container>
+                        </div>
+                        <div class="text-danger" *ngIf="!checkCustomerDistrict">
+                          * District is required
+                        </div>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control mt-3"
+                            placeholder="Enter the address"
+                            [(ngModel)]="address"
+                            name="address"
+                          />
+                          <div
+                            class="text-danger"
+                            *ngIf="!checkCustomerAddress"
+                          >
+                            * Address is required
+                          </div>
+                        </div>
+                      </div>
+                      <div class="p-3">
+                        <button
+                          class="btn btn-outline-indigo"
+                          (click)="setDeliveryInfo()"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <p class="font-monospace m-0">
+                    Address:
+                    <span class="fst-italic">{{ orderSelect.address }}</span>
+                  </p>
+                </div>
+                <div *ngIf="orderSelect.transportPrice == 0">
+                  <div class="text-center mt-2">
+                    <p class="store">SNEAKZONE STORE</p>
+                  </div>
+                  <div class="justify-content-center d-flex">
+                    <img
+                      src="https://freepngimg.com/download/shoes/28090-6-sneaker-file.png"
+                      alt="Logo"
+                      width="50%"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="card p-3">
+                <h5 class="font-monospace">Payments</h5>
+                <ul class="list-group" style="line-height: 220%">
+                  <li
+                    class="list-group-item list-group-item-success d-flex justify-content-between"
+                  >
+                    <div class="form-group w-100">
+                      <ng-select
+                        [items]="coupons"
+                        bindLabel="couponsCode"
+                        bindValue="id"
+                        class="form-control"
+                        name="coupons"
+                        [(ngModel)]="orderSelect.idCoupons"
+                        [searchFn]="customSearchFn2"
+                        [clearable]="true"
+                        (change)="setCoupons()"
+                        (clear)="clearCoupons()"
+                      >
+                        <ng-template
+                          ng-option-tmp
+                          let-item="item"
+                          let-index="index"
+                        >
+                          <div class="d-flex flex-column">
+                            <span>{{ item.couponsCode }}</span>
+                            <small>{{ item.couponsName }}</small>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                      <ng-container *ngIf="!orderSelect.idCoupons">
+                        <span class="custom-placeholder"
+                          ><iconify-icon
+                            icon="hugeicons:sale-tag-01"
+                            width="1.3em"
+                            height="1.3em"
+                          ></iconify-icon>
+                          Enter / Select a coupons code</span
+                        >
+                      </ng-container>
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-success d-flex justify-content-between"
+                  >
+                    <strong>
+                      <iconify-icon
+                        icon="ic:outline-price-change"
+                      ></iconify-icon>
+                      Total price:
+                    </strong>
+                    <span
+                      >{{ orderSelect.totalPrice | thousandSeparator }} đ</span
+                    >
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-info d-flex justify-content-between"
+                  >
+                    <strong>
+                      <iconify-icon
+                        icon="icon-park-outline:transporter"
+                      ></iconify-icon>
+                      Transport price:
+                    </strong>
+                    <span
+                      >{{
+                        orderSelect.transportPrice | thousandSeparator
+                      }}
+                      đ</span
+                    >
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-secondary d-flex justify-content-between"
+                  >
+                    <strong>
+                      <iconify-icon
+                        icon="solar:tag-price-outline"
+                      ></iconify-icon>
+                      Reduced price:
+                    </strong>
+                    <span
+                      >{{
+                        orderSelect.reducedPrice | thousandSeparator
+                      }}
+                      đ</span
+                    >
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-danger d-flex justify-content-between"
+                  >
+                    <strong>
+                      <iconify-icon
+                        icon="arcticons:priceperunit"
+                      ></iconify-icon>
+                      Total payouts:
+                    </strong>
+                    <span
+                      >{{
+                        orderSelect.totalPayouts | thousandSeparator
+                      }}
+                      đ</span
+                    >
+                  </li>
+                </ul>
+                <div class="row p-3">
+                  <button class="btn btn-success" (click)="completeOrder()">
+                    Completed
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="orderDetails.length == 0"
+          class="justify-content-center d-flex"
+        >
+          <img
+            src="https://res.cloudinary.com/dogqwwkrj/image/upload/v1729708213/cywrhzljnhekwepvkqcd.webp"
+            alt="Cart is empty"
+          />
+        </div>
+      </div>
+      <!-- Tabs content -->
+    </div>
+    <div *ngIf="orders.length == 0" class="justify-content-center d-flex">
+      <img
+        src="https://res.cloudinary.com/dogqwwkrj/image/upload/v1729708213/wesjbhkedfgkdigwgphq.jpg"
+        alt="List order is empty"
+        width="60%"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="productName"
+            (input)="filterProduct()"
+            placeholder="Enter the product name"
+          />
+        </div>
+        <div class="table-product mt-2">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product name</th>
+                <th>Weight</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pd of productDetails; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ pd.productName }}</td>
+                <td>{{ pd.weight }}</td>
+                <td *ngIf="pd.price_old != pd.price_new">
+                  <span style="text-decoration: line-through"
+                    ><small
+                      >{{ pd.price_old | thousandSeparator }} đ</small
+                    ></span
+                  >
+                  {{ pd.price_new | thousandSeparator }} đ
+                </td>
+                <td *ngIf="pd.price_old == pd.price_new">
+                  {{ pd.price_new | thousandSeparator }} đ
+                </td>
+                <td>{{ pd.quantity }}</td>
+                <td>
+                  <button
+                    class="btn btn-outline-primary"
+                    (click)="selectProduct(pd)"
+                  >
+                    <iconify-icon
+                      icon="carbon:select-window"
+                      width="1.2em"
+                      height="1.2em"
+                    ></iconify-icon>
+                    Select
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- Modal -->
+<ng-template #exampleModal3 let-modal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div *ngIf="isScannerVisible">
+        <zxing-scanner
+          (scanSuccess)="onCodeResult($event)"
+          [device]="availableDevice"
+          [torch]="torchEnabled"
+        >
+        </zxing-scanner>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="closeModal()">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- Modal -->

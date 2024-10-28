@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductResponse } from '../../class/response/product-response';
@@ -11,6 +11,9 @@ import { forkJoin } from 'rxjs';
 import { ProductDetails } from '../../class/dto/product-details';
 import { v4 as uuidv4 } from 'uuid';
 import { jwtDecode } from 'jwt-decode';
+import { QRCodeComponent } from 'angularx-qrcode';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-product-details',
@@ -19,6 +22,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class ProductDetailsComponent implements OnInit {
   @ViewChild('selectAllCheckbox', { static: false }) selectAllCheckbox!: ElementRef;
+  @ViewChildren('qrcodeElement') qrCodeElements!: QueryList<QRCodeComponent>;
 
   idProduct!: string;
   product: ProductResponse = new ProductResponse();
@@ -99,6 +103,10 @@ export class ProductDetailsComponent implements OnInit {
             selected: false,
           };
           this.productDetails.push(productDetail);
+          this.productDetails.forEach(product => {
+            product.quantity = this.formatNumber(product.quantity);
+            product.price = this.formatNumber(product.price);
+          });
         });
       });
   }
@@ -149,7 +157,7 @@ export class ProductDetailsComponent implements OnInit {
                   colorName: this.getColorById(color),
                   quantity: 20,
                   weight: 2,
-                  price: 150,
+                  price: 750000,
                 };
                 this.productDetailsGenerate.push(product);
               }
@@ -183,16 +191,36 @@ export class ProductDetailsComponent implements OnInit {
     const isChecked = event.target.checked;
     this.productDetails.forEach((product) => {
       product.selected = isChecked;
+
+      if (isChecked) {
+        product.price = this.parseFormattedNumber(product.price);
+        product.quantity = this.parseFormattedNumber(product.quantity);
+      } else {
+        product.price = this.formatNumber(product.price);
+        product.quantity = this.formatNumber(product.quantity);
+      }
     });
+
     this.updateButtonState();
   }
+
 
   onSelectRow(event: any, productId: number) {
     const isChecked = event.target.checked;
     const product = this.productDetails.find((p) => p.id === productId);
+
     if (product) {
       product.selected = isChecked;
+
+      if (isChecked) {
+        product.price = this.parseFormattedNumber(product.price);
+        product.quantity = this.parseFormattedNumber(product.quantity);
+      } else {
+        product.price = this.formatNumber(product.price);
+        product.quantity = this.formatNumber(product.quantity);
+      }
     }
+
     this.updateButtonState();
   }
 
@@ -271,4 +299,37 @@ export class ProductDetailsComponent implements OnInit {
       new Date().getTime() + timezoneOffsetInMillis
     ).toISOString();
   }
+
+  async downloadSelectedQR() {
+    const zip = new JSZip();
+
+    for (let i = 0; i < this.productDetails.length; i++) {
+      const product = this.productDetails[i];
+      if (product.selected) {
+        const qrElement = this.qrCodeElements.toArray()[i].qrcElement.nativeElement.querySelector('canvas');
+        const dataUrl = qrElement.toDataURL('image/png');
+
+        const base64 = dataUrl.split(',')[1];
+        zip.file(`QR_${product.productName}-${product.colorName}-${product.sizeName}.png`, base64, { base64: true });
+      }
+    }
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, `QR_Codes-${this.product.productName}.zip`);
+    this.loadProduct();
+    this.loadProductDetails();
+    this.isAnyRowSelected = false;
+    if (this.selectAllCheckbox) {
+      this.selectAllCheckbox.nativeElement.checked = false;
+    }
+  }
+
+  private formatNumber(value: number): string {
+    return value.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  private parseFormattedNumber(value: string): number {
+    return parseFloat(value.replace(/,/g, '').replace(/\./g, ''));
+  }
+
 }

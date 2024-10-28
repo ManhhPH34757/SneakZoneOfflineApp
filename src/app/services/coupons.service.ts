@@ -4,12 +4,14 @@ import { Observable } from 'rxjs';
 import { Coupons } from '../class/dto/coupons';
 import { FilterCoupon } from '../class/request/filter-coupons';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class CouponsService {
 
   private couponAPI ='http://localhost:8080/api/coupons';
+
   constructor(private readonly http: HttpClient){}
 
   getAll(filter?: FilterCoupon): Observable<any>{
@@ -71,5 +73,14 @@ export class CouponsService {
       'Content-Type':'application/json',
     })
     return this.http.delete(`${this.couponAPI}/${id}`, {headers : headers})
+  }
+
+  getCouponsForOrders(): Observable<any> {
+    const access_token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${access_token}`,
+      'Content-Type': 'application/json',
+    })
+    return this.http.get(`${this.couponAPI}/get-coupons-for-orders`, { headers: headers })
   }
 }
