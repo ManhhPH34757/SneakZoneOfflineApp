@@ -1,5 +1,6 @@
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,12 +25,18 @@ import { SizeComponent } from './components/size/size.component';
 import { ColorComponent } from './components/color/color.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { SaleComponent } from './components/sale/sale.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { ThousandSeparatorPipe } from './utils/thousand-separator.pipe';
+import { ThousandSeparatorDirective } from './utils/thousand-separator.directive';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ListOrdersComponent } from './components/list-orders/list-orders.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent,
     HeaderComponent,
     NavbarComponent,
     FooterComponent,
@@ -45,7 +52,11 @@ import { SaleComponent } from './components/sale/sale.component';
     SizeComponent,
     ColorComponent,
     ProductDetailsComponent,
-    SaleComponent
+    DashboardComponent,
+    CouponsComponent,
+    ThousandSeparatorPipe,
+    ThousandSeparatorDirective,
+    ListOrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -54,8 +65,11 @@ import { SaleComponent } from './components/sale/sale.component';
     ReactiveFormsModule,
     HttpClientModule,
     NgSelectModule,
+    QRCodeModule,
+    ZXingScannerModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [provideCharts(withDefaultRegisterables())],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'thousand-separator'
+  name: 'thousandSeparator'
 })
 export class ThousandSeparatorPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return null;
+  transform(value: number): string {
+    return value.toLocaleString('vi-VN');
   }
 
 }
