@@ -15,6 +15,7 @@ import { SoleComponent } from './components/sole/sole.component';
 import { SizeComponent } from './components/size/size.component';
 import { ColorComponent } from './components/color/color.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { SaleComponent } from './components/sale/sale.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'sizes', component: SizeComponent, canActivate: [authGuard] },
   { path: 'customers', component:CustomerComponent, canActivate: [authGuard] },
   { path: 'staffs', component: StaffComponent, canActivate: [authGuard], data: {expectedRole: 'ADMIN'} },
+  {path: 'sales',component: SaleComponent, canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent},
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];

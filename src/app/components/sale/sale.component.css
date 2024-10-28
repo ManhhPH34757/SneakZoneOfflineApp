@@ -1,0 +1,4 @@
+.toggle-icon {
+      font-size: 2rem; /* To lên tí cho dễ nhìn nè */
+      transition: color 0.3s ease; /* Mượt mà khi đổi màu nha */
+  }

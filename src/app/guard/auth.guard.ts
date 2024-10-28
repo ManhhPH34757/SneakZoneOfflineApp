@@ -18,11 +18,22 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
+  // if (state.url.includes('delete-sale') && decodedToken.scope !== 'admin') {
+  //   router.navigate(['/unauthorized']);
+  //   return false;
+  // }
+
   return true;
 };
 
 function isTokenValid (token: string): boolean {
   const decoded: any = jwtDecode(token);
   return decoded.exp > Date.now() / 1000;
-
 }
+
+// function canDeleteSale(decodedToken: any): boolean {
+//   return decodedToken.scope === 'admin';
+// }
+
+
+

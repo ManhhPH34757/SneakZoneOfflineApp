@@ -1,0 +1,170 @@
+<div
+  *ngIf="showAlertError"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div
+  *ngIf="showAlertSuccess"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+  style="position: fixed; top: 15px; right: 30px; z-index: 1000"
+>
+  {{ alertMessage }}
+</div>
+<div class="container">
+      <div class="card p-3 mb-3">
+            <h3 class="text-center font-monospace">Sale Infomation</h3>
+            <form>
+                  <div class="row mt-3">
+                        <div class="col-4">
+                              <div class="form-group">
+                                    <label for="saleCode">SaleCode</label>
+                                    <input type="text" id="saleCode" class="form-control mt-2"
+                                          [(ngModel)]="sale.saleCode" name="saleCode">
+                                    <div class="text-danger" *ngIf="!checkSaleCode">
+                                          * SaleCode is required
+                                    </div>
+                                    <div class="text-danger" *ngIf="!checkSaleCodeExists">
+                                          * SaleCode already exists
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="col-4">
+                              <div class="form-group">
+                                    <label for="saleName">SaleName</label>
+                                    <input type="text" id="saleName" class="form-control mt-2"
+                                          [(ngModel)]="sale.saleName" name="saleName">
+                                    <div class="text-danger" *ngIf="!checkSaleName">
+                                          * SaleName is required
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="col-4">
+                              <div class="form-group">
+                                    <label for="startDate">StartDate</label>
+                                    <input type="datetime-local" id="startDate" class="form-control mt-2"
+                                          [(ngModel)]="sale.startDate" name="startDate">
+                                    <div class="text-danger" *ngIf="!checkStartDate">
+                                          * StartDate is required
+                                    </div>
+                                    <div class="text-danger" *ngIf="!checkStartDateValid">
+                                          * StartDate must be greater than current date
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="row mt-3">
+                        <div class="col-4">
+                              <button class="btn btn-outline-success mt-4" [disabled]="editing" (click)="onSubmit()">
+                                    <iconify-icon icon="gg:add-r"></iconify-icon> Create
+                              </button>
+                              <button class="btn btn-outline-primary ms-3 mt-4" [disabled]="!editing"
+                                    (click)="onUpdate()">
+                                    <iconify-icon icon="dashicons:update-alt"></iconify-icon> Update
+                              </button>
+                              <button class="btn btn-outline-danger ms-3 mt-4" (click)="clear()">
+                                    <iconify-icon icon="tdesign:clear-formatting-1"></iconify-icon> Clear
+                              </button>
+                        </div>
+
+                        <div class="col-4">
+                              <div class="form-group">
+                                    <label for="endDate">EndDate</label>
+                                    <input type="datetime-local" id="endDate" class="form-control mt-2" [(ngModel)]="sale.endDate"
+                                          name="endDate">
+                                    <div class="text-danger" *ngIf="!checkEndDate">
+                                          * EndDate is required
+                                    </div>
+                                    <div class="text-danger" *ngIf="!checkEndDateValid">
+                                           * EndDate must be greater than current date or end date must be greater than start date
+                                    </div>
+                              </div>
+                        </div>
+
+                  </div>
+            </form>
+
+      </div>
+      <div class="card p-3">
+            <h3 class="text-center font-monospace">Sale List</h3>
+
+            <form>
+                  <div class="row">
+                        <div class="col-12">
+                              <button class="btn btn-outline-indigo float-end" (click)="filters()">
+                                    <iconify-icon icon="mingcute:filter-line"></iconify-icon> Filter
+                              </button>
+                              <button class="btn btn-outline-secondary float-end me-2" (click)="getAll()">
+                                    <iconify-icon icon="material-symbols:all-out-outline"></iconify-icon>
+                                    All
+                              </button>
+                        </div>
+                  </div>
+                  <div class="row mt-2">
+                        <div class="col-3">
+                              <div class="form-group">
+                                    <label>SaleCode</label>
+                                    <input type="text" class="form-control" [(ngModel)]="filter.saleCode" name="saleCode">
+                              </div>
+                        </div>
+                        <div class="col-3">
+                              <div class="form-group">
+                                    <label>SaleName</label>
+                                    <input type="text" class="form-control" [(ngModel)]="filter.saleName" name="saleName">
+                              </div>
+                        </div>
+                        <div class="col-3">
+                              <div class="form-group">
+                                    <label>Start</label>
+                                    <input type="datetime-local" class="form-control" [(ngModel)]="filter.startDate" name="startDate">
+                              </div>
+                        </div>
+                        <div class="col-3">
+                              <div class="form-group">
+                                    <label>End</label>
+                                    <input type="datetime-local" class="form-control" [(ngModel)]="filter.endDate" name="endDate">
+                              </div>
+                        </div>
+                  </div>
+            </form>
+            
+            <table class="table mt-5">
+                  <tr>
+                        <th>STT</th>
+                        <th>Sale Code</th>
+                        <th>Sale Name</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                  </tr>
+                  <tr *ngFor="let sa of sales; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{sa.saleCode}}</td>
+                        <td>{{sa.saleName}}</td>
+                        <td>{{formatDate(sa.startDate)}}</td>
+                        <td>{{formatDate(sa.endDate)}}</td>
+                        <td ><button (click)="toggleStatus(sa)" class="btn">
+                                    <iconify-icon
+                                          [icon]="sa.isActive ? 'mdi:toggle-switch' : 'mdi:toggle-switch-off'"
+                                          class="toggle-icon"
+                                          [style.color]=" sa.isActive ? 'green' : 'gray'"></iconify-icon>
+                              </button>
+                        </td>
+                        <td>
+                              <button class="btn btn-outline-info mt-2" (click)="edit(sa)">
+                                    <iconify-icon icon="bxs:edit"></iconify-icon>
+                              </button>
+                              <button class="btn btn-outline-dark mt-2 ms-2" (click)="delete(sa)" [disabled]="!editing">
+                                    <iconify-icon icon="material-symbols:delete"></iconify-icon>
+                              </button>
+                        </td>
+
+                  </tr>
+            </table>
+      </div>
+</div>
