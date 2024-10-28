@@ -1,5 +1,6 @@
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +29,6 @@ import { ProductDetailsComponent } from './components/product-details/product-de
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent,
     HeaderComponent,
     NavbarComponent,
     FooterComponent,
@@ -43,7 +43,8 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     StaffComponent,
     SizeComponent,
     ColorComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +54,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     HttpClientModule,
     NgSelectModule,
   ],
-  providers: [],
+  providers: [provideCharts(withDefaultRegisterables())],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
