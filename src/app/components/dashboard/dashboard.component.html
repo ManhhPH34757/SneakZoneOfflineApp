@@ -1,2 +1,200 @@
-<h3 class="font-monospace">dashboard works!</h3>
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+    data-scroll="true"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <h2 class="font-weight-bolder mb-0">Dashboard</h2>
+      </nav>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          [class.active]="activeTab === 'revenue'"
+          (click)="setActiveTab('revenue')"
+          id="revenue-tab"
+          data-bs-toggle="tab"
+          href="#revenue"
+          role="tab"
+          aria-controls="revenue"
+          [attr.aria-selected]="activeTab === 'revenue'"
+          >Revenue Chart</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          [class.active]="activeTab === 'top-products'"
+          (click)="setActiveTab('top-products')"
+          id="top-products-tab"
+          data-bs-toggle="tab"
+          href="#top-products"
+          role="tab"
+          aria-controls="top-products"
+          [attr.aria-selected]="activeTab === 'revenue'"
+          >Top 5 Best Selling Products</a
+        >
+      </li>
+    </ul>
 
+    <div class="tab-content" id="myTabContent">
+      <!-- Revenue Chart Tab -->
+      <div
+        class="tab-pane fade show active"
+        id="revenue"
+        role="tabpanel"
+        aria-labelledby="revenue-tab"
+      >
+        <!-- <div class="button-group mb-4 w-100 mt-2">
+          <button
+            class="btn btn-sm btn-info"
+            *ngIf="isMonthlyVisible"
+            id="montly"
+          (click)="switchToMonthly()"
+          >
+            Switch to montly revenue analysis
+          </button>
+          <button
+            class="btn btn-sm btn-primary"
+            *ngIf="!isMonthlyVisible"
+            id="annual"
+            (click)="switchToYearly()"
+          >
+            Switch to annual revenue analysis
+          </button>
+        </div> -->
+        <div class="row my-4 w-100 mx-auto">
+          <div class="mb-xl-0">
+            <div class="dashboard">
+              <div class="revenue-chart">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Products Tab -->
+      <div
+        class="tab-pane fade"
+        id="top-products"
+        role="tabpanel"
+        aria-labelledby="top-products-tab"
+      >
+        <!-- <div class="button-group mb-4 w-100 mt-2">
+          <button
+            class="btn btn-sm btn-info"
+            *ngIf="isMonthlyVisible"
+            id="montly"
+            (click)="switchToMonthly()"
+          >
+            Switch to montly revenue analysis
+          </button>
+          <button
+            class="btn btn-sm btn-primary"
+            *ngIf="!isMonthlyVisible"
+            id="annual"
+            (click)="switchToYearly()"
+          >
+            Switch to annual revenue analysis
+          </button>
+        </div> -->
+        <div class="row mb-4">
+          <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+            <div class="card">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h6>
+                      Top 5 best selling products by
+                      {{ isMonthlyVisible ? "month" : "year" }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0">
+                    <thead>
+                      <tr>
+                        <th
+                          class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                        >
+                          Product Name
+                        </th>
+                        <th
+                          class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                        >
+                          Quantity
+                        </th>
+                        <th
+                          class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                        >
+                          Revenue
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let product of topProductsPriod">
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div
+                              class="d-flex flex-column justify-content-center"
+                            >
+                              <h6 class="mb-0 text-sm">
+                                {{ product.product_name }}
+                              </h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          <span class="text-xs font-weight-bold">{{
+                            product.total_quantity
+                          }}</span>
+                        </td>
+                        <td class="align-middle">
+                          <div class="progress-wrapper w-75 mx-auto">
+                            <div class="progress-info">
+                              <div class="progress-percentage">
+                                <span class="text-xs font-weight-bold">{{
+                                  product.total_revenue
+                                }}</span>
+                              </div>
+                            </div>
+                            <div class="progress">
+                              <div
+                                class="progress-bar bg-gradient-info"
+                                role="progressbar"
+                                [ngStyle]="{
+                                  width:
+                                    (product.total_revenue / 10000000) * 100 +
+                                    '%'
+                                }"
+                                [attr.aria-valuenow]="product.total_revenue"
+                                aria-valuemin="0"
+                                aria-valuemax="10000000"
+                              ></div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

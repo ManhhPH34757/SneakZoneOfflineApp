@@ -65,4 +65,37 @@ export class ProductDetailsService {
     return this.http.get(`${this.productDetailsApi}/exists-products`,  { headers: header, params: params });
   }
 
+
+  // findTop5ProductsByPeriod(priod: string): Observable<any> {
+  //   const access_token = localStorage.getItem('access_token');
+  //   const header = new HttpHeaders({
+  //     Authorization: `Bearer ${access_token}`,
+  //     'Content-Type': 'application/json',
+  //   });
+
+  //   let params = new HttpParams({});
+  //   params = params.append('priod', priod);
+
+  //   return this.http.get(`${this.productDetailsApi}/top5p`, {
+  //     headers: header,
+  //     params: params,
+  //   });
+  // }
+
+  // findRevenueByPeriod(priod: string): Observable<any> {
+  //   const access_token = localStorage.getItem('access_token');
+  //   const header = new HttpHeaders({
+  //     Authorization: `Bearer ${access_token}`,
+  //     'Content-Type': 'application/json',
+  //   });
+
+  //   let params = new HttpParams({});
+  //   params = params.append('priod', priod);
+
+  //   return this.http.get(`${this.productDetailsApi}/revenue`, {
+  //     headers: header,
+  //     params: params,
+  //   });
+  // }
 }
+
