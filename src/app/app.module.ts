@@ -23,6 +23,8 @@ import { StaffComponent } from './components/staff/staff.component';
 import { SizeComponent } from './components/size/size.component';
 import { ColorComponent } from './components/color/color.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     StaffComponent,
     SizeComponent,
     ColorComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CouponsComponent
   ],
   imports: [
     BrowserModule,
