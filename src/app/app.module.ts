@@ -56,7 +56,8 @@ import { ListOrdersComponent } from './components/list-orders/list-orders.compon
     CouponsComponent,
     ThousandSeparatorPipe,
     ThousandSeparatorDirective,
-    ListOrdersComponent
+    ListOrdersComponent,
+    SaleComponent
   ],
   imports: [
     BrowserModule,
